@@ -1,0 +1,4 @@
+/services/node_modules/*
+/web/node_modules/*
+/services/.env
+/web/.env
