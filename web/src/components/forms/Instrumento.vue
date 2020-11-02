@@ -1,47 +1,129 @@
 <template>
   <v-container fluid>
     <v-row class="d-flex justify-center">
-      <v-col cols="9">
+      <v-col cols="3">
         <v-text-field
-          v-model="name"
+          v-model="nome"
           color="grey"
-          label="Nome do aluno"
-          placeholder="Informe o nome completo"
+          label="Nome do instrumento"
+          placeholder="Informe o nome"
+          outlined
+        ></v-text-field>
+      </v-col>
+      <v-col cols="3">
+        <v-text-field
+          v-model="caracteristica"
+          color="grey"
+          label="Característica"
+          placeholder="Característica ou tonalidade"
+          outlined
+        ></v-text-field>
+      </v-col>
+      <v-col cols="3">
+        <v-text-field
+          v-model="tombamento"
+          color="grey"
+          label="Tombamento"
+          placeholder="Informe o número"
+          outlined
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row class="d-flex justify-center">
+      <v-col cols="3">
+        <v-text-field
+          v-model="ano"
+          color="grey"
+          label="Ano"
+          placeholder="Ano de fabricação"
+          outlined
+        ></v-text-field>
+      </v-col>
+      <v-col cols="3">
+        <v-text-field
+          v-model="marca"
+          color="grey"
+          label="Marca"
+          placeholder="Marca do instrumento"
+          outlined
+        ></v-text-field>
+      </v-col>
+      <v-col cols="3">
+        <v-text-field
+          v-model="componentes"
+          color="grey"
+          label="Componentes"
+          placeholder="Componentes do instrumento"
           outlined
         ></v-text-field>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col cols="9">
-        <v-text-field
-          v-model="email"
+        <v-textarea
+          v-model="descricao"
           color="grey"
-          label="E-mail do aluno"
-          placeholder="Informe apenas um email"
+          label="Observações"
+          rows="2"
+          placeholder="Descrição da situação do instrumento"
+          outlined
+        ></v-textarea>
+      </v-col>
+    </v-row>
+    <v-row class="d-flex justify-center">
+      <v-col cols="3">
+        <v-text-field
+          v-model="empresa"
+          color="grey"
+          label="Empresa"
+          placeholder="Empresa onde comprou"
+          outlined
+        ></v-text-field>
+      </v-col>
+      <v-col cols="3">
+        <v-text-field
+          v-model="notaFiscal"
+          color="grey"
+          label="Nota fiscal da compra ou doação"
+          placeholder="Número da nota fiscal"
+          outlined
+        ></v-text-field>
+      </v-col>
+      <v-col cols="3">
+        <v-text-field
+          v-model="valor"
+          color="grey"
+          label="Valor"
+          placeholder="Valor da compra"
           outlined
         ></v-text-field>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
-      <v-col cols="9">
+      <v-col cols="3">
         <v-text-field
-          v-model="ra"
+          v-model="data"
           color="grey"
-          label="RA"
-          :readonly="readonly"
-          placeholder="Informe o registro acadêmico"
+          label="Data da compra ou doação"
+          placeholder="Data da compra ou doação"
           outlined
         ></v-text-field>
       </v-col>
-    </v-row>
-    <v-row class="d-flex justify-center">
-      <v-col cols="9">
+      <v-col cols="3">
         <v-text-field
-          v-model="cpf"
+          v-model="origem"
           color="grey"
-          label="CPF"
-          :readonly="readonly"
-          placeholder="Informe o número do documento"
+          label="Origem da doação"
+          placeholder="Origem da doação"
+          outlined
+        ></v-text-field>
+      </v-col>
+      <v-col cols="3">
+        <v-text-field
+          v-model="descricaoDoacao"
+          color="grey"
+          label="Observações"
+          placeholder="Descrição sobre a doação"
           outlined
         ></v-text-field>
       </v-col>
