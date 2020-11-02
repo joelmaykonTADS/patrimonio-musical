@@ -160,7 +160,15 @@ const url = process.env.VUE_APP_URL_API;
 export default {
   props: { instrumento: Object, type: String, readonly: Boolean },
   data() {
-    return { id: "", name: "", email: "", ra: "", cpf: "" };
+    return {
+      id: "",
+      nome: "",
+      caracteristica: "",
+      tombamento: "",
+      ano: "",
+      marca:"",
+      descricao:""
+    };
   },
   created() {
     if (this.student) {
@@ -173,16 +181,18 @@ export default {
   },
   methods: {
     async registerStudents() {
-      const student = {
-        name: this.name,
-        email: this.email,
-        RA: this.ra,
-        CPF: this.cpf,
+      const instrumento = {
+        nome: this.nome,
+        caracteristica: this.caracteristica,
+        tombamento: this.tombamento,
+        ano: this.ano,
+        marca:this.marca,
+        descricao:this.descricao
       };
-      await http.post(`${url}/students`, student).then((response) => {
+      await http.post(`${url}/instrumentos`, instrumento).then((response) => {
         if (response.status == 200) {
           console.log(response.data);
-          this.$router.push("/list-students");
+          this.$router.push("/instrumentos");
         }
       });
     },
