@@ -6,6 +6,11 @@ exports.create = async (req, res) => {
   const instrumento = {
     nome: req.body.nome,
     tombamento: req.body.tombamento,
+    caracteristica:req.body.caracteristica,
+    aquisicao:req.body.aquisicao,
+    marca:req.body.marca,
+    naipe:req.body.naipe,
+    ano:req.body.ano,
     descricao: req.body.descricao,
   };
 

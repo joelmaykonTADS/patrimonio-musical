@@ -16,6 +16,54 @@ module.exports = {
           key: 'id'
         }
       },
+      tombamentoId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {         // User belongsTo Company 1:1
+          model: 'tombamentos',
+          key: 'id'
+        }
+      },
+      caractetisticaId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {         // User belongsTo Company 1:1
+          model: 'caracteristicas',
+          key: 'id'
+        }
+      },
+      aquisicaoId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {         // User belongsTo Company 1:1
+          model: 'formaAquisicaos',
+          key: 'id'
+        }
+      },
+      marcaId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {         // User belongsTo Company 1:1
+          model: 'marcas',
+          key: 'id'
+        }
+      },
+      naipeId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {         // User belongsTo Company 1:1
+          model: 'naipes',
+          key: 'id'
+        }
+      },
+      anoId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {         // User belongsTo Company 1:1
+          model: 'anos',
+          key: 'id'
+        }
+      },
       descricao: {
         type: Sequelize.STRING
       },
