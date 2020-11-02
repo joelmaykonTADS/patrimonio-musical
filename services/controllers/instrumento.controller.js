@@ -1,4 +1,4 @@
-const models = require("../models");
+ const models = require("../models");
 const Instrumento = models.Instrumento;
 
 exports.create = async (req, res) => {
