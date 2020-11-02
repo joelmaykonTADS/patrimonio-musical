@@ -4,7 +4,7 @@ const Instrumento = models.Instrumento;
 exports.create = async (req, res) => {
   // Create a instrument
   const instrumento = {
-    name: req.body.name,
+    nome: req.body.nome,
     tombamento: req.body.tombamento,
     descricao: req.body.descricao,
   };
