@@ -1,4 +1,5 @@
 dependencies:
+  axios: 0.21.0
   core-js: 3.6.5
   vue: 2.6.12
   vue-router: 3.4.8
@@ -2138,6 +2139,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
+  /axios/0.21.0:
+    dependencies:
+      follow-redirects: 1.13.0
+    dev: false
+    resolution:
+      integrity: sha512-fmkJBknJKoZwem3/IKSSLpkdNXZeBu5Q7GA/aRsr2btgrptmSCxi2oFjZHqGdK9DoTil9PIHlPIZw2EcRJXRvw==
   /babel-eslint/10.1.0_eslint@6.8.0:
     dependencies:
       '@babel/code-frame': 7.10.4
@@ -4660,7 +4667,6 @@ packages:
     resolution:
       integrity: sha512-3Z4XhFZ3992uIq0XOqb9AreonueSYphE6oYbpt5+3u06JWklbsPkNv3ZKkP9Bz/r+1MWCaMoSQ28P85+1Yc77w==
   /follow-redirects/1.13.0:
-    dev: true
     engines:
       node: '>=4.0'
     resolution:
@@ -10457,6 +10463,7 @@ specifiers:
   '@vue/cli-plugin-vuex': ~4.5.0
   '@vue/cli-service': ~4.5.0
   '@vue/test-utils': ^1.0.3
+  axios: ^0.21.0
   babel-eslint: ^10.1.0
   chai: ^4.1.2
   core-js: ^3.6.5
