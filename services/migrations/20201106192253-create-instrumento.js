@@ -26,6 +26,27 @@ module.exports = {
       observacoes: {
         type: Sequelize.STRING
       },
+      componentes: {
+        type: Sequelize.STRING
+      },
+      empresa: {
+        type: Sequelize.STRING
+      },
+      notaFiscal: {
+        type: Sequelize.STRING
+      },
+      valor: {
+        type: Sequelize.STRING
+      },
+      data: {
+        type: Sequelize.DATE
+      },
+      origemDoacao: {
+        type: Sequelize.STRING
+      },
+      observacoesDoacao: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

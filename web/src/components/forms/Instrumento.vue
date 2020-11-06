@@ -120,7 +120,7 @@
       </v-col>
       <v-col cols="3">
         <v-text-field
-          v-model="descricaoDoacao"
+          v-model="observacoesDoacao"
           color="grey"
           label="Observações"
           placeholder="Descrição sobre a doação"
@@ -143,6 +143,7 @@
           >Editar</v-btn
         >
         <v-btn
+          id="salvar"
           v-if="type !== 'edit'"
           color="grey darken-3"
           @click="cadastrarInstrumento()"
@@ -154,9 +155,8 @@
   </v-container>
 </template>
 <script>
-import axios from "axios";
-const http = axios;
-const url = process.env.VUE_APP_URL_API;
+import { salvar } from "@/services/instrumentos";
+
 export default {
   props: { instrumento: Object, type: String, readonly: Boolean },
   data() {
@@ -166,17 +166,27 @@ export default {
       caracteristica: "",
       tombamento: "",
       ano: "",
-      marca:"",
-      observacoes:""
+      marca: "",
+      componentes: "",
+      observacoes: "",
+      origem: "",
+      notaFiscal: "",
+      empresa: "",
+      valor: "",
+      data: "",
+      observacoesDoacao: "",
     };
   },
   created() {
-    if (this.student) {
-      this.id = this.student.id;
-      this.name = this.student.name;
-      this.email = this.student.email;
-      this.ra = this.student.RA;
-      this.cpf = this.student.CPF;
+    if (this.instrumento) {
+      this.id = this.instrumento.id;
+      this.nome = this.instrumento.nome;
+      this.tombamento = this.instrumento.tombamento;
+      this.caracteristica = this.instrumento.caracteristica;
+      this.ano = this.instrumento.ano;
+      this.marca = this.instrumento.marca;
+      this.observacoes = this.instrumento.observacoes;
+      this.componentes = this.instrumento.componentes;
     }
   },
   methods: {
@@ -186,26 +196,20 @@ export default {
         caracteristica: this.caracteristica,
         tombamento: this.tombamento,
         ano: this.ano,
-        marca:this.marca,
-        observacoes:this.observacoes
+        marca: this.marca,
+        componentes: this.componentes,
+        observacoes: this.observacoes,
+        empresa: this.empresa,
+        notaFiscal: this.notaFiscal,
+        valor: this.valor,
+        data: this.data,
+        origemDoacao: this.origem,
+        observacoesDoacao: this.observacoesDoacao,
       };
-      await http.post(`${url}/instrumentos`, instrumento).then((response) => {
-        if (response.status == 200) {
-          this.$router.push("/instrumentos");
-        }
-      });
-    },
-    async editStudents() {
-      const student = {
-        name: this.name,
-        email: this.email,
-      };
-      await http.put(`${url}/students/${this.id}`, student).then((response) => {
-        if (response.status == 200) {
-          console.log(response.data);
-          this.$router.push("/instrumentos");
-        }
-      });
+      const resultado = salvar(instrumento);
+      if (resultado) {
+        this.$router.push("/instrumentos");
+      }
     },
     voltar() {
       this.$router.push("/instrumentos");
