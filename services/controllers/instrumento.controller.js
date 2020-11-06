@@ -1,4 +1,4 @@
- const models = require("../models");
+const models = require("../models");
 const Instrumento = models.Instrumento;
 
 exports.create = async (req, res) => {
@@ -20,7 +20,7 @@ exports.create = async (req, res) => {
 
   if (!instrumentoExist) {
     // Save student in the database
-    Students.create(instrumento)
+    Instrumento.create(instrumento)
       .then((data) => {
         res.send(data);
       })

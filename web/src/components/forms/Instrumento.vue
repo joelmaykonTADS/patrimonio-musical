@@ -61,7 +61,7 @@
     <v-row class="d-flex justify-center">
       <v-col cols="9">
         <v-textarea
-          v-model="descricao"
+          v-model="observacoes"
           color="grey"
           label="Observações"
           rows="2"
@@ -145,7 +145,7 @@
         <v-btn
           v-if="type !== 'edit'"
           color="grey darken-3"
-          @click="registerStudents()"
+          @click="cadastrarInstrumento()"
           class="white--text"
           >Salvar</v-btn
         >
@@ -167,7 +167,7 @@ export default {
       tombamento: "",
       ano: "",
       marca:"",
-      descricao:""
+      observacoes:""
     };
   },
   created() {
@@ -180,18 +180,17 @@ export default {
     }
   },
   methods: {
-    async registerStudents() {
+    async cadastrarInstrumento() {
       const instrumento = {
         nome: this.nome,
         caracteristica: this.caracteristica,
         tombamento: this.tombamento,
         ano: this.ano,
         marca:this.marca,
-        descricao:this.descricao
+        observacoes:this.observacoes
       };
       await http.post(`${url}/instrumentos`, instrumento).then((response) => {
         if (response.status == 200) {
-          console.log(response.data);
           this.$router.push("/instrumentos");
         }
       });
