@@ -22,6 +22,16 @@ const db = require("./models");
 db.sequelize.sync();
 
 require("./routes/instrumento.routes")(app);
+require("./routes/nome.routes")(app);
+require("./routes/tombamento.routes")(app);
+require("./routes/marca.routes")(app);
+require("./routes/caracteristica.routes")(app);
+require("./routes/ano.routes")(app);
+require("./routes/componente.routes")(app);
+require("./routes/empresa.routes")(app);
+require("./routes/origem.routes")(app);
+
+
 
 // listen for requests
 app.listen(port, () => {

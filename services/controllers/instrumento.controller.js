@@ -2,7 +2,6 @@ const models = require("../models");
 const Instrumento = models.Instrumento;
 
 exports.create = async (req, res) => {
-  // Create a instrument
   const instrumento = {
     nome: req.body.nome,
     tombamento: req.body.tombamento,
@@ -19,7 +18,7 @@ exports.create = async (req, res) => {
   });
 
   if (!instrumentoExist) {
-    // Save student in the database
+    // Save instrument in the database
     Instrumento.create(instrumento)
       .then((data) => {
         res.send(data);
@@ -27,14 +26,89 @@ exports.create = async (req, res) => {
       .catch((err) => {
         res.status(500).send({
           message:
-            err.message || "A Problem occurred while creating the Instrument.",
+            err.message || "Um problema ocorreu ao cadastrar.",
         });
       });
   } else {
     res.status(400).send({
-      message: `The Instrument  has data ${
-        instrumento.tombamento ? `Tombamento: ${instrumento.tombamento}` : ``
-      } duplicate.`,
+      message: `Os dados do instrumento ${
+        instrumento.tombamento ? `tombamento: ${instrumento.tombamento}` : ``
+      } já existe.`,
     });
   }
+};
+
+exports.findAll = (_, res) => {
+  Instrumento.findAll()
+      .then(data => {
+          res.status(200).send(data);
+      })
+      .catch(err => {
+          res.status(500).send({
+              message:
+                  err.message || "Um problema ocorreu ao buscar."
+          });
+      });
+};
+
+exports.update = (req, res) => {
+  const id = req.params.id;
+
+  Instrumento.update(req.body, {
+      where: { id: id }
+  })
+      .then(num => {
+          if (num == 1) {
+              res.send({
+                  message: "Atualizado com sucesso."
+              });
+          } else {
+              res.send({
+                  message: `Não foi posível atualizar com id: ${id}. talvez não foi encontrado!`
+              });
+          }
+      })
+      .catch(err => {
+          res.status(500).send({
+              message: `Um problema ocorreu ao atualizar o intrumento id=${id}`
+          });
+      });
+};
+
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  Instrumento.destroy({
+      where: { id: id }
+  })
+      .then(num => {
+          if (num == 1) {
+              res.send({
+                  message: "Instrumento deletado com sucesso!"
+              });
+          } else {
+              res.send({
+                  message: `Não foi possível deletar instrumento de id: ${id}. talvez não foi encontrado!`
+              });
+          }
+      })
+      .catch(err => {
+          res.status(500).send({
+              message: `Um problema ocorreu ao deletar instrumento de id: ${id}.`
+          });
+      });
+};
+
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+
+  Instrumento.findByPk(id)
+      .then(data => {
+          res.send(data);
+      })
+      .catch(() => {
+          res.status(500).send({
+              message: `Um problema ocorreu ao buscar instrumento de id: ${id}`
+          });
+      });
 };
