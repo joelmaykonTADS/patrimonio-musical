@@ -179,17 +179,20 @@ export default {
   },
   created() {
     if (this.instrumento) {
-      this.id = this.instrumento.id;
-      this.nome = this.instrumento.nome;
-      this.tombamento = this.instrumento.tombamento;
-      this.caracteristica = this.instrumento.caracteristica;
-      this.ano = this.instrumento.ano;
-      this.marca = this.instrumento.marca;
-      this.observacoes = this.instrumento.observacoes;
-      this.componentes = this.instrumento.componentes;
+      this.alterarInstrumento(this.instrumento);
     }
   },
   methods: {
+    alterarInstrumento(instrumento) {
+      this.id = instrumento.id;
+      this.nome = instrumento.nome;
+      this.tombamento = instrumento.tombamento;
+      this.caracteristica = instrumento.caracteristica;
+      this.ano = instrumento.ano;
+      this.marca = instrumento.marca;
+      this.observacoes = instrumento.observacoes;
+      this.componentes = instrumento.componentes;
+    },
     async cadastrarInstrumento() {
       const instrumento = {
         nome: this.nome,
@@ -206,10 +209,9 @@ export default {
         origemDoacao: this.origem,
         observacoesDoacao: this.observacoesDoacao,
       };
-      const resultado = salvar(instrumento);
-      if (resultado) {
-        this.$router.push("/instrumentos");
-      }
+      await salvar(instrumento).then((response) => {
+        if (response.status == 200) this.$router.push("/instrumentos");
+      });
     },
     voltar() {
       this.$router.push("/instrumentos");
