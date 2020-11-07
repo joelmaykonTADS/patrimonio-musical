@@ -11,7 +11,7 @@ describe("Instrumento.vue", () => {
   const instrumento = {
     nome: "Violino",
     caracteristica: "4/4",
-    tombamento: "0081",
+    tombamento: "0001",
     ano: "2020",
     marca: "Parrot",
     observacoes: "observado que ...",
@@ -38,7 +38,7 @@ describe("Instrumento.vue", () => {
   it("renders data when passed", () => {
     expect(wrapper.vm.$data.nome).to.equal("Violino");
     expect(wrapper.vm.$data.caracteristica).to.equal("4/4");
-    expect(wrapper.vm.$data.tombamento).to.equal("0081");
+    expect(wrapper.vm.$data.tombamento).to.equal("0001");
     expect(wrapper.vm.$data.marca).to.equal("Parrot");
     expect(wrapper.vm.$data.observacoes).to.equal("observado que ...");
     expect(wrapper.vm.$data.componentes).to.equal("Arco, Case");
@@ -46,7 +46,6 @@ describe("Instrumento.vue", () => {
   it("testing function register instrument", async () => {
     const btnSalvar = wrapper.find("#salvar");
     expect(btnSalvar.selector).to.equal("#salvar")
-    btnSalvar.trigger("click");
-    await wrapper.vm.cadastrarInstrumento();     
+    btnSalvar.trigger("click");       
   });
 });
