@@ -3,8 +3,6 @@ const http = axios;
 const url = process.env.VUE_APP_URL_API;
 
 async function salvar(instrumento) {
-  await http.post(`${url}/instrumentos`, instrumento).then((response) => {
-    return response; 
-  });
+  return http.post(`${url}/instrumentos`, instrumento);
 }
 export { salvar };
