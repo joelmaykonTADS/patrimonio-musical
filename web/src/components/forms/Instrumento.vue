@@ -2,60 +2,64 @@
   <v-container fluid>
     <v-row class="d-flex justify-center">
       <v-col cols="3">
-        <v-text-field
+        <v-combobox
           v-model="nome"
+          :items="nomes"
           color="grey"
+          item-color="grey darken-2"
           label="Nome do instrumento"
           placeholder="Informe o nome"
           outlined
-        ></v-text-field>
+        ></v-combobox>
       </v-col>
       <v-col cols="3">
-        <v-text-field
+        <v-combobox
           v-model="caracteristica"
+          :items="caracteristicas"
           color="grey"
           label="Característica"
           placeholder="Característica ou tonalidade"
           outlined
-        ></v-text-field>
+        ></v-combobox>
       </v-col>
       <v-col cols="3">
-        <v-text-field
+        <v-combobox
           v-model="tombamento"
           color="grey"
           label="Tombamento"
           placeholder="Informe o número"
           outlined
-        ></v-text-field>
+        ></v-combobox>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col cols="3">
-        <v-text-field
+        <v-combobox
           v-model="ano"
           color="grey"
           label="Ano"
           placeholder="Ano de fabricação"
           outlined
-        ></v-text-field>
+        ></v-combobox>
       </v-col>
       <v-col cols="3">
-        <v-text-field
+        <v-combobox
           v-model="marca"
           color="grey"
           label="Marca"
           placeholder="Marca do instrumento"
           outlined
-        ></v-text-field>
+        ></v-combobox>
       </v-col>
       <v-col cols="3">
-        <v-text-field
+        <v-combobox
           v-model="componentes"
           color="grey"
           label="Componentes"
           placeholder="Componentes do instrumento"
           outlined
-        ></v-text-field>
+          multiple
+        ></v-combobox>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
@@ -72,13 +76,13 @@
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col cols="3">
-        <v-text-field
+        <v-combobox
           v-model="empresa"
           color="grey"
           label="Empresa"
           placeholder="Empresa onde comprou"
           outlined
-        ></v-text-field>
+        ></v-combobox>
       </v-col>
       <v-col cols="3">
         <v-text-field
@@ -110,13 +114,13 @@
         ></v-text-field>
       </v-col>
       <v-col cols="3">
-        <v-text-field
+        <v-combobox
           v-model="origem"
           color="grey"
           label="Origem da doação"
           placeholder="Origem da doação"
           outlined
-        ></v-text-field>
+        ></v-combobox>
       </v-col>
       <v-col cols="3">
         <v-text-field
@@ -130,7 +134,7 @@
     </v-row>
     <v-row class="d-flex justify-end">
       <v-col cols="2">
-        <v-btn color="grey darken-1" class="white--text" @click="voltar()"
+        <v-btn color="grey darken-1" class="white--text" @click="BuscarNomes()"
           >Cancelar</v-btn
         >
       </v-col>
@@ -156,6 +160,8 @@
 </template>
 <script>
 import { salvar } from "@/services/instrumentos";
+import { buscarNomes } from "@/services/nomes";
+import { buscarCaracteristicas } from "@/services/caracteristicas";
 
 export default {
   props: { instrumento: Object, type: String, readonly: Boolean },
@@ -175,9 +181,13 @@ export default {
       valor: "",
       data: "",
       observacoesDoacao: "",
+      nomes: [],
+      caracteristicas: [],
     };
   },
-  created() {
+  async created() {
+    await this.BuscarNomes();
+    await this.BuscarCaracteristicas();
     if (this.instrumento) {
       this.alterarInstrumento(this.instrumento);
     }
@@ -211,6 +221,24 @@ export default {
       };
       await salvar(instrumento).then((response) => {
         if (response.status == 200) this.$router.push("/instrumentos");
+      });
+    },
+    async BuscarNomes() {
+      await buscarNomes().then((response) => {
+        if (response.status == 200) {
+          response.data.forEach((element) => {
+            this.nomes.push(element.nome);
+          });
+        }
+      });
+    },
+    async BuscarCaracteristicas() {
+      await buscarCaracteristicas().then((response) => {
+        if (response.status == 200) {
+          response.data.forEach((element) => {
+            this.caracteristicas.push(element.nome);
+          });
+        }
       });
     },
     voltar() {
