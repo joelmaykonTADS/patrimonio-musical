@@ -220,7 +220,7 @@ export default {
         observacoesDoacao: this.observacoesDoacao,
       };
       await salvar(instrumento).then((response) => {
-        if (response.status == 200) this.$router.push("/instrumentos");
+        if (response.status == 200) this.voltar();
       });
     },
     async BuscarNomes() {
