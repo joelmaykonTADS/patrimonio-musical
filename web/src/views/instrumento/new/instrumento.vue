@@ -9,7 +9,7 @@
 </template>
 <script>
 import LayoutPatrimonio from "@/components/layouts/Patrimonio";
-import FormInstrumento from "@/components/forms/Instrumento";
+import FormInstrumento from "@/components/instrumento/Instrumento";
 
 export default {
   components: {

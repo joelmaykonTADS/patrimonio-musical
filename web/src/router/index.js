@@ -17,16 +17,16 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Instrumento.vue"),
+      import(/* webpackChunkName: "about" */ "../views/instrumento"),
   },
   {
     path: "/cadastrar-instrumentos",
-    name: "RegisterInstrumento",
+    name: "InstrumentoRegister",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/forms/Instrumento.vue"),
+      import(/* webpackChunkName: "about" */ "../views/instrumento/new/instrumento"),
   },
 ];
 

@@ -16,7 +16,14 @@
         </v-hover>
       </v-flex>
       <v-flex xs6 sm6 md3 lg3 offset-md1 align-center class="pt-5 pl-4">
-        <btn-register />
+        <router-link
+          :to="{
+            name: 'InstrumentoRegister',
+            params: { type:'register', readonly: false },
+          }"
+        >
+          <v-btn color="grey" class="white--text">Cadastrar instrumento</v-btn>
+        </router-link>
       </v-flex>
     </v-flex>
     <v-data-table
@@ -30,29 +37,21 @@
           <v-spacer></v-spacer>
         </v-toolbar>
       </template>
-      <template v-slot:item.actions="item">
+      <!--template v-slot:item.actions="item">
         <btn-edit :student="item.item" />
         <btn-delete
           :student="item.item"
           @updateListStudents="getAllStudents()"
         />
-      </template>
+      </template-->
     </v-data-table>
   </v-card>
 </template>
 <script>
-import BtnDelete from "@/components/buttons/delete/alerts/Instrumento";
-import BtnRegister from "@/components/buttons/register/Instrumento";
-import BtnEdit from "@/components/buttons/edit/Instrumento";
 import axios from "axios";
 const http = axios;
 const url = process.env.VUE_APP_URL_API;
 export default {
-  components: {
-    BtnDelete,
-    BtnRegister,
-    BtnEdit,
-  },
   data() {
     return {
       search: "",
@@ -110,3 +109,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+a {
+  text-decoration: none;
+}
+</style>

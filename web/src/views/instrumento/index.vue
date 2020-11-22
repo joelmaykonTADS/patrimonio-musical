@@ -5,7 +5,7 @@
 </template>
 <script>
 import LayoutPatrimonio from "@/components/layouts/Patrimonio";
-import TableInstrumento from "@/components/tables/Instrumento";
+import TableInstrumento from "@/components/instrumento/InstrumentoList";
 
 export default {
   components: {

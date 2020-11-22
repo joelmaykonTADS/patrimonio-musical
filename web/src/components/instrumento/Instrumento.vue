@@ -159,9 +159,8 @@
   </v-container>
 </template>
 <script>
-import { salvar } from "@/services/instrumentos";
-import { buscarNomes } from "@/services/nomes";
 import { buscarCaracteristicas } from "@/services/caracteristicas";
+import { get, post } from "@/services/repository";
 
 export default {
   props: { instrumento: Object, type: String, readonly: Boolean },
@@ -219,12 +218,12 @@ export default {
         origemDoacao: this.origem,
         observacoesDoacao: this.observacoesDoacao,
       };
-      await salvar(instrumento).then((response) => {
+      await post("instrumentos", instrumento).then((response) => {
         if (response.status == 200) this.voltar();
       });
     },
     async BuscarNomes() {
-      await buscarNomes().then((response) => {
+      await get("instrumentos").then((response) => {
         if (response.status == 200) {
           response.data.forEach((element) => {
             this.nomes.push(element.nome);
