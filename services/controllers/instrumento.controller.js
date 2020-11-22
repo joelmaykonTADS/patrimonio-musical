@@ -19,7 +19,7 @@ exports.create = async (req, res) => {
     ano: req.body.ano,
     descricao: req.body.descricao,
     empresa: req.body.empresa,
-    origem:req.body.origem
+    origem: req.body.origem
   };
 
   const list = [
@@ -31,6 +31,7 @@ exports.create = async (req, res) => {
     { model: Marca, field: { nome: instrumento.marca } },
     { model: Origem, field: { nome: instrumento.origem } }
   ]
+  const t = await sequelize.transaction();
 
   list.forEach(async element => {
     const { model, field } = element;
@@ -41,19 +42,21 @@ exports.create = async (req, res) => {
     if (!Exist) {
       model.create({ ...field })
     }
-  });
+  }, { transaction: t });
 
   const instrumentoExist = await Instrumento.findOne({
     where: { tombamento: instrumento.tombamento },
-  });
+  }, { transaction: t });
 
   if (!instrumentoExist) {
     // Save instrument in the database
-    Instrumento.create(instrumento)
+    Instrumento.create(instrumento, { transaction: t })
       .then((data) => {
+        await t.commit();
         res.send(data);
       })
       .catch((err) => {
+        await t.rollback();
         res.status(500).send({
           message: err.message || "Um problema ocorreu ao cadastrar.",
         });
