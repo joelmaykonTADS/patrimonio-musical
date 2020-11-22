@@ -25,6 +25,7 @@
       <v-col cols="3">
         <v-combobox
           v-model="tombamento"
+          :items="tombamentos"
           color="grey"
           label="Tombamento"
           placeholder="Informe o número"
@@ -36,6 +37,7 @@
       <v-col cols="3">
         <v-combobox
           v-model="ano"
+          :items="anos"
           color="grey"
           label="Ano"
           placeholder="Ano de fabricação"
@@ -45,6 +47,7 @@
       <v-col cols="3">
         <v-combobox
           v-model="marca"
+          :items="marcas"
           color="grey"
           label="Marca"
           placeholder="Marca do instrumento"
@@ -78,6 +81,7 @@
       <v-col cols="3">
         <v-combobox
           v-model="empresa"
+          :items="empresas"
           color="grey"
           label="Empresa"
           placeholder="Empresa onde comprou"
@@ -116,6 +120,7 @@
       <v-col cols="3">
         <v-combobox
           v-model="origem"
+          :items="origens"
           color="grey"
           label="Origem da doação"
           placeholder="Origem da doação"
@@ -159,7 +164,6 @@
   </v-container>
 </template>
 <script>
-import { buscarCaracteristicas } from "@/services/caracteristicas";
 import { get, post } from "@/services/repository";
 
 export default {
@@ -182,11 +186,15 @@ export default {
       observacoesDoacao: "",
       nomes: [],
       caracteristicas: [],
+      tombamentos: [],
+      anos: [],
+      marcas: [],
+      origens: [],
+      empresas: [],
     };
   },
   async created() {
-    await this.BuscarNomes();
-    await this.BuscarCaracteristicas();
+    await this.AtualizarFormulário();
     if (this.instrumento) {
       this.alterarInstrumento(this.instrumento);
     }
@@ -201,6 +209,8 @@ export default {
       this.marca = instrumento.marca;
       this.observacoes = instrumento.observacoes;
       this.componentes = instrumento.componentes;
+      this.empresa = instrumento.empresa;
+      this.origem = instrumento.origem
     },
     async cadastrarInstrumento() {
       const instrumento = {
@@ -215,31 +225,35 @@ export default {
         notaFiscal: this.notaFiscal,
         valor: this.valor,
         data: this.data,
-        origemDoacao: this.origem,
+        origem: this.origem,
         observacoesDoacao: this.observacoesDoacao,
       };
+      console.log(instrumento)
       await post("instrumentos", instrumento).then((response) => {
         if (response.status == 200) this.voltar();
       });
     },
-    async BuscarNomes() {
-      await get("instrumentos").then((response) => {
-        if (response.status == 200) {
-          response.data.forEach((element) => {
-            this.nomes.push(element.nome);
-          });
-        }
+    async AtualizarFormulário() {
+      const lista = [
+        { url: "nomes", lista: this.nomes, field: "nome" },
+        { url: "caracteristicas", lista: this.caracteristicas, field: "nome" },
+        { url: "tombamentos", lista: this.tombamentos, field: "numero" },
+        { url: "anos", lista: this.anos, field: "numero" },
+        { url: "marcas", lista: this.marcas, field: "nome" },
+        { url: "empresas", lista: this.empresas, field: "nome" },
+        { url: "origens", lista: this.origens, field: "nome" },
+      ];
+      lista.forEach(async (item) => {
+        await get(item.url).then((response) => {
+          if (response.status == 200) {
+            response.data.forEach((element) => {
+              item.lista.push(element[item.field]);
+            });
+          }
+        });
       });
     },
-    async BuscarCaracteristicas() {
-      await buscarCaracteristicas().then((response) => {
-        if (response.status == 200) {
-          response.data.forEach((element) => {
-            this.caracteristicas.push(element.nome);
-          });
-        }
-      });
-    },
+
     voltar() {
       this.$router.push("/instrumentos");
     },

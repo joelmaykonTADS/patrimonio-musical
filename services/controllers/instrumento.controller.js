@@ -6,7 +6,7 @@ const Tombamento = models.Tombamento;
 const Ano = models.Ano;
 const Marca = models.Marca;
 const Empresa = models.Empresa;
-const Origem = model.Origem;
+const Origem = models.Origem;
 
 exports.create = async (req, res) => {
   const instrumento = {
@@ -18,6 +18,8 @@ exports.create = async (req, res) => {
     naipe: req.body.naipe,
     ano: req.body.ano,
     descricao: req.body.descricao,
+    empresa: req.body.empresa,
+    origem:req.body.origem
   };
 
   const list = [
@@ -26,12 +28,13 @@ exports.create = async (req, res) => {
     { model: Tombamento, field: { numero: instrumento.tombamento } },
     { model: Ano, field: { numero: instrumento.ano } },
     { model: Empresa, field: { nome: instrumento.empresa } },
-    { model: Marca, field: { numero: instrumento.marca } },
-    { model: Origem, field: { numero: instrumento.origem } }
+    { model: Marca, field: { nome: instrumento.marca } },
+    { model: Origem, field: { nome: instrumento.origem } }
   ]
 
   list.forEach(async element => {
     const { model, field } = element;
+    console.log(`field: ${field.nome}`)
     const Exist = await model.findOne({
       where: { ...field },
     });
