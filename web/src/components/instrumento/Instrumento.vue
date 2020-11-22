@@ -10,7 +10,19 @@
           label="Nome do instrumento"
           placeholder="Informe o nome"
           outlined
-        ></v-combobox>
+        >
+          <template v-slot:item="{ index, item }">  
+              {{ item }}      
+            <v-spacer></v-spacer>
+            <v-list-item-action @click.stop>
+              <v-btn icon @click.stop.prevent="delete(index, item)">
+                <v-icon>{{
+                  "mdi-check"
+                }}</v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </template>
+        </v-combobox>
       </v-col>
       <v-col cols="3">
         <v-combobox
@@ -191,6 +203,8 @@ export default {
       marcas: [],
       origens: [],
       empresas: [],
+      editing: "",
+      editingIndex: -1,
     };
   },
   watch: {
@@ -218,25 +232,28 @@ export default {
   },
   async created() {
     await this.AtualizarFormulário();
-    if (this.instrumento) {
-      this.alterarInstrumento(this.instrumento);
-    }
+    this.alterarInstrumento(this.instrumento);
   },
   methods: {
+    delete(index, item) {
+      console.log(index, item)
+    },
     capitalizeFirstLetter: (str) => {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
     alterarInstrumento(instrumento) {
-      this.id = instrumento.id;
-      this.nome = instrumento.nome;
-      this.tombamento = instrumento.tombamento;
-      this.caracteristica = instrumento.caracteristica;
-      this.ano = instrumento.ano;
-      this.marca = instrumento.marca;
-      this.observacoes = instrumento.observacoes;
-      this.componentes = instrumento.componentes;
-      this.empresa = instrumento.empresa;
-      this.origem = instrumento.origem;
+      if (instrumento) {
+        this.id = instrumento.id;
+        this.nome = instrumento.nome;
+        this.tombamento = instrumento.tombamento;
+        this.caracteristica = instrumento.caracteristica;
+        this.ano = instrumento.ano;
+        this.marca = instrumento.marca;
+        this.observacoes = instrumento.observacoes;
+        this.componentes = instrumento.componentes;
+        this.empresa = instrumento.empresa;
+        this.origem = instrumento.origem;
+      }
     },
     async cadastrarInstrumento() {
       const instrumento = {
