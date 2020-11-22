@@ -5,6 +5,8 @@ const Caracteristica = models.Caracteristica;
 const Tombamento = models.Tombamento;
 const Ano = models.Ano;
 const Marca = models.Marca;
+const Empresa = models.Empresa;
+const Origem = model.Origem;
 
 exports.create = async (req, res) => {
   const instrumento = {
@@ -17,40 +19,26 @@ exports.create = async (req, res) => {
     ano: req.body.ano,
     descricao: req.body.descricao,
   };
-  const nomeExist = await Nome.findOne({
-    where: { nome: instrumento.nome },
-  });
-  if (!nomeExist) {
-    Nome.create({ nome: instrumento.nome })     
-  }
 
-  const caracteristicaExist = await Caracteristica.findOne({
-    where: { nome: instrumento.caracteristica },
-  });
-  if (!caracteristicaExist) {
-    Caracteristica.create({ nome: instrumento.caracteristica })      
-  }
+  const list = [
+    { model: Nome, field: { nome: instrumento.nome } },
+    { model: Caracteristica, field: { nome: instrumento.caracteristica } },
+    { model: Tombamento, field: { numero: instrumento.tombamento } },
+    { model: Ano, field: { numero: instrumento.ano } },
+    { model: Empresa, field: { nome: instrumento.empresa } },
+    { model: Marca, field: { numero: instrumento.marca } },
+    { model: Origem, field: { numero: instrumento.origem } }
+  ]
 
-  const tombamentoExist = await Tombamento.findOne({
-    where: { numero: instrumento.tombamento },
+  list.forEach(async element => {
+    const { model, field } = element;
+    const Exist = await model.findOne({
+      where: { ...field },
+    });
+    if (!Exist) {
+      model.create({ ...field })
+    }
   });
-  if (!tombamentoExist) {
-    Tombamento.create({ numero: instrumento.tombamento })     
-  }
-
-  const anoExist = await Ano.findOne({
-    where: { numero: instrumento.ano },
-  });
-  if (!anoExist) {
-    Ano.create({ numero: instrumento.ano })      
-  }
-
-  const marcaExist = await Marca.findOne({
-    where: { nome: instrumento.marca },
-  });
-  if (!marcaExist) {
-    Marca.create({ nome: instrumento.nome })     
-  }
 
   const instrumentoExist = await Instrumento.findOne({
     where: { tombamento: instrumento.tombamento },
@@ -69,9 +57,8 @@ exports.create = async (req, res) => {
       });
   } else {
     res.status(400).send({
-      message: `Os dados do instrumento ${
-        instrumento.tombamento ? `tombamento: ${instrumento.tombamento}` : ``
-      } já existe.`,
+      message: `Os dados do instrumento ${instrumento.tombamento ? `tombamento: ${instrumento.tombamento}` : ``
+        } já existe.`,
     });
   }
 };
