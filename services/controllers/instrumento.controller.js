@@ -31,7 +31,9 @@ exports.create = async (req, res) => {
     { model: Marca, field: { nome: instrumento.marca } },
     { model: Origem, field: { nome: instrumento.origem } }
   ]
-  const t = await sequelize.transaction();
+
+  let transaction;
+  transaction = await models.sequelize.transaction();
 
   list.forEach(async element => {
     const { model, field } = element;
@@ -42,26 +44,27 @@ exports.create = async (req, res) => {
     if (!Exist) {
       model.create({ ...field })
     }
-  }, { transaction: t });
+  }, { transaction });
 
   const instrumentoExist = await Instrumento.findOne({
     where: { tombamento: instrumento.tombamento },
-  }, { transaction: t });
+  }, { transaction });
 
   if (!instrumentoExist) {
     // Save instrument in the database
-    Instrumento.create(instrumento, { transaction: t })
-      .then((data) => {
-        await t.commit();
+    Instrumento.create(instrumento, { transaction })
+      .then(async (data) => {
+        await transaction.commit();
         res.send(data);
       })
-      .catch((err) => {
-        await t.rollback();
+      .catch(async (err) => {
+        if (transaction) await transaction.rollback();
         res.status(500).send({
           message: err.message || "Um problema ocorreu ao cadastrar.",
         });
       });
   } else {
+    if (transaction) await transaction.rollback();
     res.status(400).send({
       message: `Os dados do instrumento ${instrumento.tombamento ? `tombamento: ${instrumento.tombamento}` : ``
         } já existe.`,
