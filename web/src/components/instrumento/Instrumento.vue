@@ -193,6 +193,29 @@ export default {
       empresas: [],
     };
   },
+  watch: {
+    nome: function (newValue) {
+      this.nome = this.capitalizeFirstLetter(newValue);
+    },
+    caracteristica: function (newValue) {
+      this.caracteristica = this.capitalizeFirstLetter(newValue);
+    },
+    marca: function (newValue) {
+      this.marca = this.capitalizeFirstLetter(newValue);
+    },
+    empresa: function (newValue) {
+      this.empresa = this.capitalizeFirstLetter(newValue);
+    },
+    origem: function (newValue) {
+      this.origem = this.capitalizeFirstLetter(newValue);
+    },
+    observacoes: function (newValue) {
+      this.observacoes = this.capitalizeFirstLetter(newValue);
+    },
+    observacoesDoacao: function (newValue) {
+      this.observacoesDoacao = this.capitalizeFirstLetter(newValue);
+    },
+  },
   async created() {
     await this.AtualizarFormulário();
     if (this.instrumento) {
@@ -200,6 +223,9 @@ export default {
     }
   },
   methods: {
+    capitalizeFirstLetter: (str) => {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    },
     alterarInstrumento(instrumento) {
       this.id = instrumento.id;
       this.nome = instrumento.nome;
@@ -210,7 +236,7 @@ export default {
       this.observacoes = instrumento.observacoes;
       this.componentes = instrumento.componentes;
       this.empresa = instrumento.empresa;
-      this.origem = instrumento.origem
+      this.origem = instrumento.origem;
     },
     async cadastrarInstrumento() {
       const instrumento = {
@@ -228,7 +254,7 @@ export default {
         origem: this.origem,
         observacoesDoacao: this.observacoesDoacao,
       };
-      console.log(instrumento)
+      console.log(instrumento);
       await post("instrumentos", instrumento).then((response) => {
         if (response.status == 200) this.voltar();
       });
