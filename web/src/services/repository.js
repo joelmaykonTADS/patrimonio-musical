@@ -11,8 +11,8 @@ async function post(resource, payload) {
     return http.post(`${url}/${resource}`, payload);
 }
 
-async function remove(resource, id) {
-    return http.delete(`${url}/${resource}/${id}`);
+async function remove(resource, params) {
+    return http.delete(`${url}/${resource}/${params}`);
 }
 
 export { get, post, remove };
