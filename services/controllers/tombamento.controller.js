@@ -1,5 +1,8 @@
 const models = require("../models");
+const { Op } = require("sequelize");
+
 const Tombamento = models.Tombamento;
+const Instrumento = models.Instrumento;
 
 exports.create = async (req, res) => {
   const tombamento = { numero: req.body.numero };
@@ -19,23 +22,34 @@ exports.create = async (req, res) => {
       });
   } else {
     res.status(400).send({
-      message: `Os dados do tombamento ${
-        tombamento.numero ? `numero: ${tombamento.numero}` : ``
-      } já existe.`,
+      message: `Os dados do tombamento ${tombamento.numero ? `numero: ${tombamento.numero}` : ``
+        } já existe.`,
     });
   }
 };
 
 exports.findAll = (_, res) => {
-  Tombamento.findAll()
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Um problema ocorreu com a busca.",
-      });
+  Instrumento.findAll().then((instrumentos) => {
+    const tombamentos = [];
+    instrumentos.forEach(element => {
+      tombamentos.push(element.tombamento)
     });
+    Tombamento.findAll({
+      where: { [Op.not]: [{ numero: tombamentos }] },
+    })
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err.message || "Um problema ocorreu com a busca.",
+        });
+      });
+  }).catch((err) => {
+    res.status(500).send({
+      message: err.message || "Um problema ocorreu com a busca.",
+    });
+  });
 };
 
 exports.update = (req, res) => {
