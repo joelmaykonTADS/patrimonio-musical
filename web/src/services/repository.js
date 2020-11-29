@@ -11,7 +11,11 @@ async function post(resource, payload) {
     return http.post(`${url}/${resource}`, payload);
 }
 
-export { get, post };
+async function remove(resource, id) {
+    return http.delete(`${url}/${resource}/${id}`);
+}
+
+export { get, post, remove };
 
 
 
