@@ -5,20 +5,20 @@
         <v-combobox
           v-model="nome"
           :items="nomes"
+          item-text="data"
+          item-value="data"
           color="grey"
           item-color="grey darken-2"
           label="Nome do instrumento"
           placeholder="Informe o nome"
           outlined
         >
-          <template v-slot:item="{ index, item }">  
-              {{ item }}      
+          <template v-slot:item="{ item }">
+            {{ item.data }}
             <v-spacer></v-spacer>
             <v-list-item-action @click.stop>
-              <v-btn icon @click.stop.prevent="delete(index, item)">
-                <v-icon>{{
-                  "mdi-check"
-                }}</v-icon>
+              <v-btn icon @click="remove('nomes', 'nome', item.id, nomes)">
+                <v-icon>{{ "mdi-delete" }}</v-icon>
               </v-btn>
             </v-list-item-action>
           </template>
@@ -28,6 +28,8 @@
         <v-combobox
           v-model="caracteristica"
           :items="caracteristicas"
+          item-text="data"
+          item-value="data"
           color="grey"
           label="Característica"
           placeholder="Característica ou tonalidade"
@@ -38,6 +40,8 @@
         <v-combobox
           v-model="tombamento"
           :items="tombamentos"
+          item-text="data"
+          item-value="data"
           color="grey"
           label="Tombamento"
           placeholder="Informe o número"
@@ -50,6 +54,8 @@
         <v-combobox
           v-model="ano"
           :items="anos"
+          item-text="data"
+          item-value="data"
           color="grey"
           label="Ano"
           placeholder="Ano de fabricação"
@@ -60,6 +66,8 @@
         <v-combobox
           v-model="marca"
           :items="marcas"
+          item-text="data"
+          item-value="data"
           color="grey"
           label="Marca"
           placeholder="Marca do instrumento"
@@ -94,6 +102,8 @@
         <v-combobox
           v-model="empresa"
           :items="empresas"
+          item-text="data"
+          item-value="data"
           color="grey"
           label="Empresa"
           placeholder="Empresa onde comprou"
@@ -133,6 +143,8 @@
         <v-combobox
           v-model="origem"
           :items="origens"
+          item-text="data"
+          item-value="data"
           color="grey"
           label="Origem da doação"
           placeholder="Origem da doação"
@@ -176,7 +188,7 @@
   </v-container>
 </template>
 <script>
-import { get, post } from "@/services/repository";
+import { get, post, remove } from "@/services/repository";
 
 export default {
   props: { instrumento: Object, type: String, readonly: Boolean },
@@ -209,25 +221,26 @@ export default {
   },
   watch: {
     nome: function (newValue) {
-      this.nome = this.capitalizeFirstLetter(newValue);
+     
+      this.nome = this.capitalizeFirstLetter(newValue.data);
     },
     caracteristica: function (newValue) {
-      this.caracteristica = this.capitalizeFirstLetter(newValue);
+      this.caracteristica = this.capitalizeFirstLetter(newValue.data);
     },
     marca: function (newValue) {
-      this.marca = this.capitalizeFirstLetter(newValue);
+      this.marca = this.capitalizeFirstLetter(newValue.data);
     },
     empresa: function (newValue) {
-      this.empresa = this.capitalizeFirstLetter(newValue);
+      this.empresa = this.capitalizeFirstLetter(newValue.data);
     },
     origem: function (newValue) {
-      this.origem = this.capitalizeFirstLetter(newValue);
+      this.origem = this.capitalizeFirstLetter(newValue.data);
     },
     observacoes: function (newValue) {
-      this.observacoes = this.capitalizeFirstLetter(newValue);
+      this.observacoes = this.capitalizeFirstLetter(newValue.data);
     },
     observacoesDoacao: function (newValue) {
-      this.observacoesDoacao = this.capitalizeFirstLetter(newValue);
+      this.observacoesDoacao = this.capitalizeFirstLetter(newValue.data);
     },
   },
   async created() {
@@ -235,8 +248,21 @@ export default {
     this.alterarInstrumento(this.instrumento);
   },
   methods: {
-    delete(index, item) {
-      console.log(index, item)
+    async remove(url, field, id, lista) {
+      console.log(url, field, id, lista);
+      await remove(url, id).then(async (response) => {
+        if (response.status == 200) {
+          await get(url).then((response) => {
+            if (response.status == 200) {
+              lista.lenght = 0;
+              response.data.forEach((element) => {
+                lista.push({ id: element.id, data: element[field] });
+                console.log(lista)
+              });
+            }
+          });
+        }
+      });
     },
     capitalizeFirstLetter: (str) => {
       return str.charAt(0).toUpperCase() + str.slice(1);
@@ -290,7 +316,7 @@ export default {
         await get(item.url).then((response) => {
           if (response.status == 200) {
             response.data.forEach((element) => {
-              item.lista.push(element[item.field]);
+              item.lista.push({ id: element.id, data: element[item.field] });
             });
           }
         });
