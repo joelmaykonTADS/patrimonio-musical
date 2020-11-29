@@ -28,28 +28,31 @@ exports.create = async (req, res) => {
   }
 };
 
+
 exports.findAll = (_, res) => {
-  Instrumento.findAll().then((instrumentos) => {
-    const tombamentos = [];
-    instrumentos.forEach(element => {
-      tombamentos.push(element.tombamento)
-    });
-    Tombamento.findAll({
-      where: { [Op.not]: [{ numero: tombamentos }] },
-    })
-      .then((data) => {
+  Instrumento.findAll()
+    .then((instrumentos) => {
+      let tombamentos = [];
+      instrumentos.forEach(instrumento => {
+        if (instrumento) {
+          tombamentos.push(instrumento.tombamento);
+        }
+      })
+      Tombamento.findAll({ where: { numero: { [Op.notIn]: tombamentos } } }).then((data) => {
+        console.log('teste: ',data)
         res.status(200).send(data);
       })
-      .catch((err) => {
-        res.status(500).send({
-          message: err.message || "Um problema ocorreu com a busca.",
+        .catch((err) => {
+          res.status(500).send({
+            message: err.message || "Um problema ocorreu ao salvar.",
+          });
         });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Um problema ocorreu ao salvar.",
       });
-  }).catch((err) => {
-    res.status(500).send({
-      message: err.message || "Um problema ocorreu com a busca.",
     });
-  });
 };
 
 exports.update = (req, res) => {
