@@ -19,7 +19,14 @@ exports.create = async (req, res) => {
     ano: req.body.ano,
     descricao: req.body.descricao,
     empresa: req.body.empresa,
-    origem: req.body.origem
+    origem: req.body.origem,
+    observacoes:req.body.observacoes,
+    componentes:req.body.componentes,
+    notaFiscal: req.body.notaFiscal,
+    valor:req.body.valor,
+    data:req.body.data,
+    origemDoacao:req.body.origemDoacao,
+    observacoesDoacao:req.body.observacoesDoacao
   };
 
   const list = [
@@ -37,11 +44,10 @@ exports.create = async (req, res) => {
 
   list.forEach(async element => {
     const { model, field } = element;
-    console.log(`field: ${field.nome}`)
-    const Exist = await model.findOne({
+    const exist = await model.findOne({
       where: { ...field },
     });
-    if (!Exist) {
+    if (!exist) {
       model.create({ ...field })
     }
   }, { transaction });
@@ -49,7 +55,6 @@ exports.create = async (req, res) => {
   const instrumentoExist = await Instrumento.findOne({
     where: { tombamento: instrumento.tombamento },
   }, { transaction });
-
   if (!instrumentoExist) {
     // Save instrument in the database
     Instrumento.create(instrumento, { transaction })
