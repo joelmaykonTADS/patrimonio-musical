@@ -31,7 +31,7 @@ exports.create = async (req, res) => {
 
   let transaction;
   transaction = await models.sequelize.transaction();
-  if (req.body.saveNames === "sim") {
+  if (req.body.saveItem === "sim") {
     const list = [
       { model: Nome, field: { nome: instrumento.nome } },
       { model: Caracteristica, field: { nome: instrumento.caracteristica } },

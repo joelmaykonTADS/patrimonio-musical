@@ -296,6 +296,7 @@ export default {
         data: this.data,
         origem: this.origem,
         observacoesDoacao: this.observacoesDoacao,
+        saveItem:'sim'
       };
       console.log(instrumento);
       await post("instrumentos", instrumento).then((response) => {
