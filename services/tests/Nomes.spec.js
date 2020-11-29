@@ -5,11 +5,11 @@ chai.use(chaiHttp);
 chai.should();
 
 const oldNome = {
-  nome: "Violino"  
+  nome: "ViolinoTeste"  
 };
 
 const newNome = {
-  nome: "violino" 
+  nome: "ViolinoTeste" 
 };
 
 let nome;
