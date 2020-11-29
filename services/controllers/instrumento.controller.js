@@ -20,37 +20,38 @@ exports.create = async (req, res) => {
     descricao: req.body.descricao,
     empresa: req.body.empresa,
     origem: req.body.origem,
-    observacoes:req.body.observacoes,
-    componentes:req.body.componentes,
+    observacoes: req.body.observacoes,
+    componentes: req.body.componentes,
     notaFiscal: req.body.notaFiscal,
-    valor:req.body.valor,
-    data:req.body.data,
-    origemDoacao:req.body.origemDoacao,
-    observacoesDoacao:req.body.observacoesDoacao
+    valor: req.body.valor,
+    data: req.body.data,
+    origemDoacao: req.body.origemDoacao,
+    observacoesDoacao: req.body.observacoesDoacao
   };
-
-  const list = [
-    { model: Nome, field: { nome: instrumento.nome } },
-    { model: Caracteristica, field: { nome: instrumento.caracteristica } },
-    { model: Tombamento, field: { numero: instrumento.tombamento } },
-    { model: Ano, field: { numero: instrumento.ano } },
-    { model: Empresa, field: { nome: instrumento.empresa } },
-    { model: Marca, field: { nome: instrumento.marca } },
-    { model: Origem, field: { nome: instrumento.origem } }
-  ]
 
   let transaction;
   transaction = await models.sequelize.transaction();
+  if (req.body.saveNames === "sim") {
+    const list = [
+      { model: Nome, field: { nome: instrumento.nome } },
+      { model: Caracteristica, field: { nome: instrumento.caracteristica } },
+      { model: Tombamento, field: { numero: instrumento.tombamento } },
+      { model: Ano, field: { numero: instrumento.ano } },
+      { model: Empresa, field: { nome: instrumento.empresa } },
+      { model: Marca, field: { nome: instrumento.marca } },
+      { model: Origem, field: { nome: instrumento.origem } }
+    ]
+    list.forEach(async element => {
+      const { model, field } = element;
+      const exist = await model.findOne({
+        where: { ...field },
+      });
+      if (!exist) {
+        model.create({ ...field })
+      }
+    }, { transaction });
+  }
 
-  list.forEach(async element => {
-    const { model, field } = element;
-    const exist = await model.findOne({
-      where: { ...field },
-    });
-    if (!exist) {
-      model.create({ ...field })
-    }
-  }, { transaction });
 
   const instrumentoExist = await Instrumento.findOne({
     where: { tombamento: instrumento.tombamento },
