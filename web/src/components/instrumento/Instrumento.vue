@@ -221,7 +221,6 @@ export default {
   },
   watch: {
     nome: function (newValue) {
-     
       this.nome = this.capitalizeFirstLetter(newValue.data);
     },
     caracteristica: function (newValue) {
@@ -249,7 +248,6 @@ export default {
   },
   methods: {
     async remove(url, field, id, lista) {
-      console.log(url, field, id, lista);
       await remove(url, id).then(async (response) => {
         if (response.status == 200) {
           await get(url).then((response) => {
@@ -257,7 +255,6 @@ export default {
               lista.lenght = 0;
               response.data.forEach((element) => {
                 lista.push({ id: element.id, data: element[field] });
-                console.log(lista)
               });
             }
           });
@@ -282,24 +279,27 @@ export default {
       }
     },
     async cadastrarInstrumento() {
-      const instrumento = {
-        nome: this.nome,
-        caracteristica: this.caracteristica,
-        tombamento: this.tombamento,
-        ano: this.ano,
-        marca: this.marca,
-        componentes: this.componentes,
-        observacoes: this.observacoes,
-        empresa: this.empresa,
-        notaFiscal: this.notaFiscal,
-        valor: this.valor,
-        data: this.data,
-        origem: this.origem,
-        observacoesDoacao: this.observacoesDoacao,
-        saveItem:'sim'
+      const dados = {
+        instrumento: {
+          nome: this.nome,
+          caracteristica: this.caracteristica,
+          tombamento: this.tombamento.data,
+          ano: this.ano.data,
+          marca: this.marca,
+          aquisicao: "",
+          naipe: "",
+          componentes: this.componentes,
+          observacoes: this.observacoes,
+          empresa: this.empresa,
+          notaFiscal: this.notaFiscal,
+          valor: this.valor,
+          data: this.data,
+          origem: this.origem,
+          observacoesDoacao: this.observacoesDoacao,
+        },
+        saveItem: "sim",
       };
-      console.log(instrumento);
-      await post("instrumentos", instrumento).then((response) => {
+      await post("instrumentos", dados).then((response) => {
         if (response.status == 200) this.voltar();
       });
     },
