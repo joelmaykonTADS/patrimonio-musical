@@ -10,27 +10,24 @@ const Origem = models.Origem;
 
 exports.create = async (req, res) => {
   const instrumento = {
-    nome: req.body.nome,
-    tombamento: req.body.tombamento,
-    caracteristica: req.body.caracteristica,
-    aquisicao: req.body.aquisicao,
-    marca: req.body.marca,
-    naipe: req.body.naipe,
-    ano: req.body.ano,
-    descricao: req.body.descricao,
-    empresa: req.body.empresa,
-    origem: req.body.origem,
-    observacoes: req.body.observacoes,
-    componentes: req.body.componentes,
-    notaFiscal: req.body.notaFiscal,
-    valor: req.body.valor,
-    data: req.body.data,
-    origemDoacao: req.body.origemDoacao,
-    observacoesDoacao: req.body.observacoesDoacao
+    nome: req.body.instrumento.nome,
+    tombamento: req.body.instrumento.tombamento,
+    caracteristica: req.body.instrumento.caracteristica,
+    aquisicao: req.body.instrumento.aquisicao,
+    marca: req.body.instrumento.marca,
+    naipe: req.body.instrumento.naipe,
+    ano: req.body.instrumento.ano,
+    descricao: req.body.instrumento.descricao,
+    empresa: req.body.instrumento.empresa,
+    origem: req.body.instrumento.origem,
+    observacoes: req.body.instrumento.observacoes,
+    componentes: req.body.instrumento.componentes.join(),
+    notaFiscal: req.body.instrumento.notaFiscal,
+    valor: req.body.instrumento.valor,
+    data: req.body.instrumento.data,
+    observacoesDoacao: req.body.instrumento.observacoesDoacao
   };
 
-  let transaction;
-  transaction = await models.sequelize.transaction();
   if (req.body.saveItem === "sim") {
     const list = [
       { model: Nome, field: { nome: instrumento.nome } },
@@ -49,28 +46,25 @@ exports.create = async (req, res) => {
       if (!exist) {
         model.create({ ...field })
       }
-    }, { transaction });
+    });
   }
 
 
   const instrumentoExist = await Instrumento.findOne({
     where: { tombamento: instrumento.tombamento },
-  }, { transaction });
+  });
   if (!instrumentoExist) {
     // Save instrument in the database
-    Instrumento.create(instrumento, { transaction })
-      .then(async (data) => {
-        await transaction.commit();
+    Instrumento.create(instrumento)
+      .then((data) => {
         res.send(data);
       })
-      .catch(async (err) => {
-        if (transaction) await transaction.rollback();
+      .catch((err) => {
         res.status(500).send({
           message: err.message || "Um problema ocorreu ao cadastrar.",
         });
       });
   } else {
-    if (transaction) await transaction.rollback();
     res.status(400).send({
       message: `Os dados do instrumento ${instrumento.tombamento ? `tombamento: ${instrumento.tombamento}` : ``
         } já existe.`,
