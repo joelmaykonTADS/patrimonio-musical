@@ -68,7 +68,4 @@ export default {
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-.filepond--item {
-  width: calc(50% - 0.5em);
-}
 </style>
