@@ -12,7 +12,13 @@
   "dependencies": {
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
+    "filepond": "^4.23.1",
+    "filepond-plugin-file-poster": "^2.3.1",
+    "filepond-plugin-file-validate-type": "^1.2.5",
+    "filepond-plugin-image-preview": "^4.6.4",
+    "v-mask": "^2.2.3",
     "vue": "^2.6.11",
+    "vue-filepond": "^6.0.3",
     "vue-router": "^3.2.0",
     "vuetify": "^2.2.11",
     "vuex": "^3.4.0"
@@ -53,7 +59,8 @@
       {
         "files": [
           "**/__tests__/*.{j,t}s?(x)",
-          "**/tests/unit/**/*.spec.{j,t}s?(x)"        ],
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
         "env": {
           "mocha": true
         }
