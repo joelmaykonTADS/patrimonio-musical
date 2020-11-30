@@ -39,7 +39,6 @@ exports.findAll = (_, res) => {
         }
       })
       Tombamento.findAll({ where: { numero: { [Op.notIn]: tombamentos } } }).then((data) => {
-        console.log('teste: ',data)
         res.status(200).send(data);
       })
         .catch((err) => {

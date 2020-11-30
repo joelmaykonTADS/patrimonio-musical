@@ -85,7 +85,6 @@ describe("the suite of the integrations test ", () => {
         .put(`/instrumentos/${instrumento.id}`)
         .send(instrumento)
         .then((res) => {
-          console.log(res.body);
           res.should.have.status(200);
           res.body.should.be.an("object");
           done();

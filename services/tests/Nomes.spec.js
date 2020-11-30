@@ -61,7 +61,6 @@ describe("the suite of the integrations test ", () => {
         .put(`/nomes/${nome.id}`)
         .send(nome)
         .then((res) => {
-          console.log(res.body);
           res.should.have.status(200);
           res.body.should.be.an("object");
           done();

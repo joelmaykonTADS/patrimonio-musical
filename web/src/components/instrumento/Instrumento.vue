@@ -274,8 +274,6 @@ export default {
   },
   methods: {
     handleFilePondInit: function () {
-      console.log("FilePond has initialized");
-
       // example of instance method call on pond reference
       this.$refs.pond.getFiles();
     },
@@ -317,7 +315,6 @@ export default {
         },
         saveItem: "sim",
       };
-      console.log(dados);
       await post("instrumentos", dados).then((response) => {
         if (response.status == 200) this.voltar();
       });

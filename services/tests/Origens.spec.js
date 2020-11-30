@@ -61,7 +61,6 @@ describe("the suite of the integrations test ", () => {
         .put(`/origens/${origem.id}`)
         .send(origem)
         .then((res) => {
-          console.log(res.body);
           res.should.have.status(200);
           res.body.should.be.an("object"); 
           done();
