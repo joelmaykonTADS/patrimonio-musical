@@ -3,21 +3,28 @@
     <v-hover>
       <v-card
         slot-scope="{ hover }"
-        :class="`elevation-${hover ? 12 : 2}`"
+        :class="`elevation-${hover ? 3 : 1}`"
         class="mx-auto"
+        color="grey lighten-2"
       >
         <v-card-text>
+          <v-row class="d-flex text-center">
+            <v-col cols="12">
+              <v-icon large color="grey darken-2"> mdi-cloud-upload </v-icon>
+            </v-col>
+          </v-row>
           <file-pond
             name="test"
             ref="pond"
-            class="mouse-open"
+            className="mouse-open"
             class-name="my-pond"
-            :label-idle="label"
             allow-multiple="true"
             accepted-file-types="application/pdf"
+            :label-idle="label"
             v-bind:files="myFiles"
             v-on:init="handleFilePondInit"
-          />
+          >
+          </file-pond>
         </v-card-text>
       </v-card>
     </v-hover>
@@ -40,7 +47,7 @@ const FilePond = vueFilePond(
   FilePondPluginFilePoster
 );
 export default {
-  props:{label:String},
+  props: { label: String },
   components: {
     FilePond,
   },
@@ -48,6 +55,12 @@ export default {
     return {
       myFiles: [],
     };
+  },
+  methods: {
+    handleFilePondInit: function () {
+      // example of instance method call on pond reference
+      this.$refs.pond.getFiles();
+    },
   },
 };
 </script>
@@ -67,5 +80,4 @@ export default {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
-
 </style>
