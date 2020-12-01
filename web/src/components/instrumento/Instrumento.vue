@@ -315,7 +315,7 @@ export default {
       });
     },
     async AtualizarFormulário() {
-      const lista_atualizacoes_formulario = [
+      const lista_campos_formulario = [
         { url: "nomes", lista: this.nomes, field: "nome" },
         { url: "caracteristicas", lista: this.caracteristicas, field: "nome" },
         { url: "tombamentos", lista: this.tombamentos, field: "numero" },
@@ -324,11 +324,12 @@ export default {
         { url: "empresas", lista: this.empresas, field: "nome" },
         { url: "origens", lista: this.origens, field: "nome" },
       ];
-      lista_atualizacoes_formulario.forEach(async (item) => {
-        await get(item.url).then((response) => {
+      
+      lista_campos_formulario.forEach(async (campo) => {
+        await get(campo.url).then((response) => {
           if (response.status == 200) {
-            response.data.forEach((element) => {
-              item.lista.push(element[item.field]);
+            response.data.forEach((dado) => {
+              campo.lista.push(dado[campo.field]);
             });
           }
         });
