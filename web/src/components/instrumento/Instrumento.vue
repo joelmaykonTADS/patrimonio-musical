@@ -73,7 +73,7 @@
           v-model="observacoes"
           color="grey"
           label="Observações"
-          rows="2"
+          rows="1"
           placeholder="Descrição da situação do instrumento"
           outlined
         ></v-textarea>
@@ -121,11 +121,11 @@
       </v-col>
       <v-col cols="3">
         <v-combobox
-          v-model="origem"
+          v-model="origemDoacao"
           :items="origens"
           color="grey"
-          label="Origem da doação"
-          placeholder="Origem da doação"
+          label="origem da doação"
+          placeholder="origem da doação"
           outlined
         ></v-combobox>
       </v-col>
@@ -225,7 +225,7 @@ export default {
       marca: "",
       componentes: "",
       observacoes: "",
-      origem: "",
+      origemDoacao: "",
       notaFiscal: "",
       empresa: "",
       valor: "",
@@ -260,8 +260,8 @@ export default {
     empresa: function (newValue) {
       this.empresa = this.capitalizeFirstLetter(newValue);
     },
-    origem: function (newValue) {
-      this.origem = this.capitalizeFirstLetter(newValue);
+    origemDoacao: function (newValue) {
+      this.origemDoacao = this.capitalizeFirstLetter(newValue);
     },
     observacoes: function (newValue) {
       this.observacoes = this.capitalizeFirstLetter(newValue);
@@ -277,6 +277,7 @@ export default {
   methods: {
     alterarInstrumento(instrumento) {
       if (instrumento) {
+        console.log(instrumento);
         this.id = instrumento.id;
         this.nome = instrumento.nome;
         this.tombamento = instrumento.tombamento;
@@ -286,7 +287,12 @@ export default {
         this.observacoes = instrumento.observacoes;
         this.componentes = instrumento.componentes;
         this.empresa = instrumento.empresa;
-        this.origem = instrumento.origem;
+        this.origemDoacao = instrumento.origemDoacao;
+        this.notaFiscal = instrumento.notaFiscal;
+        this.observacoesDoacao = instrumento.observacoesDoacao;
+        this.valor = instrumento.valor;
+        this.data = instrumento.data;
+        this.origemDoacao = instrumento.origemDoacao;
       }
     },
     capitalizeFirstLetter: (str) => {
@@ -308,7 +314,7 @@ export default {
           notaFiscal: this.notaFiscal,
           valor: this.valor,
           data: this.data,
-          origem: this.origem,
+          origemDoacao: this.origemDoacao,
           observacoesDoacao: this.observacoesDoacao,
         },
         saveItem: "sim",
@@ -356,6 +362,6 @@ export default {
 }
 
 .form-row-top {
-  margin-top: -40px;
+  margin-top: -46px;
 }
 </style>
