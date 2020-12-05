@@ -1,5 +1,5 @@
 <template>
-  <layout-patrimonio modulo="Módulo Patrimônio" title="Lista de instrumentos">
+  <layout-patrimonio modulo="Módulo Patrimônio" title="Estoque de instrumentos">
     <table-instrumento />
   </layout-patrimonio>
 </template>

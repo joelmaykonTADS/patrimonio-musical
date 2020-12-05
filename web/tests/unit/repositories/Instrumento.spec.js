@@ -1,7 +1,7 @@
-import { salvar } from "@/services/instrumentos.js";
+import { post } from "@/services/repository.js";
 import { expect } from "chai";
 
-describe("services instrumento.js", () => {
+describe("services instrumento ", () => {
   const instrumento = {
     nome: "Violino",
     caracteristica: "4/4",
@@ -19,12 +19,14 @@ describe("services instrumento.js", () => {
   };
 
   it("testing method salvar ok", async () => {
-    await salvar(instrumento)
+    await post('instrumentos',instrumento)
       .then((resultado) => {
+        console.log(resultado)
         if (resultado) expect(resultado.status).to.equal(200);
       })
       .catch((e) => {
+        console.log(e)
         if (e) expect(e.response.status).to.equal(400);
       });
-  });
+  }); 
 });

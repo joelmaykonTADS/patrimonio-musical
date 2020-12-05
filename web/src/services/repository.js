@@ -6,6 +6,7 @@ async function get(resource) {
     return await http.get(`${url}/${resource}`);
 }
 
+
 async function post(resource, payload) {
     return http.post(`${url}/${resource}`, payload);
 }

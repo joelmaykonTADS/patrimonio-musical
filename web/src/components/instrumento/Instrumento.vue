@@ -27,7 +27,7 @@
           v-model="tombamento"
           :items="tombamentos"
           color="grey"
-          maxlength="3"
+          maxlength="4"
           label="Tombamento"
           placeholder="Informe o número"
           outlined
@@ -39,7 +39,7 @@
         <v-combobox
           v-model="ano"
           :items="anos"
-          maxlength="3"
+          maxlength="4"
           color="grey"
           label="Ano"
           placeholder="Ano de fabricação"
@@ -141,19 +141,19 @@
     </v-row>
     <v-row class="d-flex justify-center form-row-top">
       <v-col cols="9" class="text-center">
-        <span class="body-1 font-weight-bold">Upload de arquivos</span>
+        <span class="body-1 font-weight-bold">Upload de documentos</span>
         <v-divider class="mt-3" />
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col cols="3">
-        <files label="Anexar nota fiscal" />
+        <upload label="Insira aqui o termo"/>
       </v-col>
       <v-col cols="3">
-        <files label="Anexar termo da doação" />
+        <upload label="Insira aqui a nota fiscal"/>
       </v-col>
       <v-col cols="3">
-        <files label="Anexar outros documentos" />
+        <upload label="insira aqui documento extra"/>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-end py-auto">
@@ -174,7 +174,7 @@
           fab
           dark
           small
-          color="red"
+          color="red  lighten-1"
           @click="voltar()"
           v-if="type !== 'edit'"
         >
@@ -186,7 +186,7 @@
           fab
           dark
           small
-          color="green"
+          color="green lighten-1"
           @click="cadastrarInstrumento()"
         >
           <v-icon>mdi-check</v-icon>
@@ -201,7 +201,7 @@
         >
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn fab dark small color="red" v-if="type === 'edit'">
+        <v-btn fab dark small color="red lighten-2" v-if="type === 'edit'">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </v-speed-dial>
@@ -210,12 +210,10 @@
 </template>
 <script>
 import { get, post } from "@/services/repository";
-import Files from "@/components/instrumento/Files";
+import upload from "@/components/instrumento/Files"
 
 export default {
-  components: {
-    Files,
-  },
+  components:{upload},
   props: { instrumento: Object, type: String, readonly: Boolean },
   data() {
     return {
@@ -242,9 +240,14 @@ export default {
       empresas: [],
       editing: "",
       editingIndex: -1,
+      arquivoTermo: [],
+      arquivoNotaFiscal: [],
     };
   },
   watch: {
+    arquivoNotaFiscal: function (value) {
+      console.log(value);
+    },
     nome: function (newValue) {
       this.nome = this.capitalizeFirstLetter(newValue);
     },
@@ -271,10 +274,7 @@ export default {
     await this.AtualizarFormulário();
     this.alterarInstrumento(this.instrumento);
   },
-  methods: {    
-    capitalizeFirstLetter: (str) => {
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    },
+  methods: {
     alterarInstrumento(instrumento) {
       if (instrumento) {
         this.id = instrumento.id;
@@ -288,6 +288,9 @@ export default {
         this.empresa = instrumento.empresa;
         this.origem = instrumento.origem;
       }
+    },
+    capitalizeFirstLetter: (str) => {
+      return str.charAt(0).toUpperCase() + str.slice(1);
     },
     async cadastrarInstrumento() {
       const dados = {
@@ -310,10 +313,11 @@ export default {
         },
         saveItem: "sim",
       };
-      await post("instrumentos", dados).then((response) => {
+      await post("instrumentos", dados).then(async (response) => {
         if (response.status == 200) this.voltar();
       });
     },
+
     async AtualizarFormulário() {
       const lista_campos_formulario = [
         { url: "nomes", lista: this.nomes, field: "nome" },
@@ -324,7 +328,7 @@ export default {
         { url: "empresas", lista: this.empresas, field: "nome" },
         { url: "origens", lista: this.origens, field: "nome" },
       ];
-      
+
       lista_campos_formulario.forEach(async (campo) => {
         await get(campo.url).then((response) => {
           if (response.status == 200) {
