@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card elevation="0"  align="center">
+    <v-card elevation="0" align="center">
       <v-flex xs12 sm12 md12 lg12 d-flex>
         <v-flex xs6 sm6 md8 lg8 class="pt-5 pl-2">
           <v-hover>
@@ -41,21 +41,9 @@
             <v-spacer></v-spacer>
           </v-toolbar>
         </template>
-        <template v-slot:item.actions="instrumentos">
-          <v-row>
-            <v-col>
-          <v-btn fab small :instrumento="instrumentos">
-            <v-icon dark color="blue lighten-1"> mdi-pencil </v-icon>
-          </v-btn>         
-            </v-col>
-            <v-col>
-          <v-btn fab small :instrumento="instrumentos">
-            <v-icon dark color="red lighten-1"> mdi-delete </v-icon></v-btn
-          >
-            </v-col>
-          </v-row>
-          <!-- <btn-edit :student="item.item" />
-        <btn-delete
+        <template v-slot:item.actions="item">
+          <btn-edit :instrumento="item.item" />
+          <!--btn-delete
           :student="item.item"
           @updateListStudents="getAllStudents()"
         /> -->
@@ -69,8 +57,12 @@
 </template>
 <script>
 import { get } from "@/services/repository";
+import BtnEdit from "@/components/instrumento/EditInstrumento";
 
 export default {
+  components: {
+    BtnEdit,
+  },
   data() {
     return {
       overlay: false,

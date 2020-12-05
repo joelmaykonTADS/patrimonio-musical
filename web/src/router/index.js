@@ -20,7 +20,7 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/instrumento"),
   },
   {
-    path: "/cadastrar-instrumentos",
+    path: "/cadastrar-instrumento",
     name: "InstrumentoRegister",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -28,6 +28,15 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/instrumento/new/instrumento"),
   },
+  {
+    path: '/editar-instrumento',
+    name: 'EditInstrumento',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ "../views/instrumento/new/instrumento"),
+    props: true
+  }
 ];
 
 const router = new VueRouter({

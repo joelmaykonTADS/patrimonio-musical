@@ -147,13 +147,13 @@
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col cols="3">
-        <upload label="Insira aqui o termo"/>
+        <upload label="Insira aqui o termo" />
       </v-col>
       <v-col cols="3">
-        <upload label="Insira aqui a nota fiscal"/>
+        <upload label="Insira aqui a nota fiscal" />
       </v-col>
       <v-col cols="3">
-        <upload label="insira aqui documento extra"/>
+        <upload label="insira aqui documento extra" />
       </v-col>
     </v-row>
     <v-row class="d-flex justify-end py-auto">
@@ -210,10 +210,10 @@
 </template>
 <script>
 import { get, post } from "@/services/repository";
-import upload from "@/components/instrumento/Files"
+import upload from "@/components/instrumento/Files";
 
 export default {
-  components:{upload},
+  components: { upload },
   props: { instrumento: Object, type: String, readonly: Boolean },
   data() {
     return {
