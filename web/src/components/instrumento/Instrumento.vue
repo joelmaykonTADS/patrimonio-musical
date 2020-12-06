@@ -58,7 +58,8 @@
       </v-col>
       <v-col cols="3">
         <v-combobox
-          v-model="componentes"
+          v-model="componente"
+          :items="componentes"
           color="grey"
           label="Componentes"
           placeholder="Componentes do instrumento"
@@ -168,7 +169,7 @@
         transition="slide-y-reverse-transition"
       >
         <template v-slot:activator>
-          <v-btn color="grey darken-3" dark fab>
+          <v-btn color="orange" dark fab>
             <v-icon> mdi-alert-circle-outline </v-icon>
           </v-btn>
         </template>
@@ -226,6 +227,7 @@ export default {
       tombamento: "",
       ano: "",
       marca: "",
+      componente:[],
       componentes: [],
       observacoes: "",
       origemDoacao: "",
@@ -288,7 +290,7 @@ export default {
         this.ano = instrumento.ano;
         this.marca = instrumento.marca;
         this.observacoes = instrumento.observacoes;
-        this.componentes = instrumento.componentes.split(",");
+        this.componente = instrumento.componentes.split(",");
         this.empresa = instrumento.empresa;
         this.origemDoacao = instrumento.origemDoacao;
         this.notaFiscal = instrumento.notaFiscal;
@@ -311,7 +313,7 @@ export default {
           marca: this.marca,
           aquisicao: "",
           naipe: "",
-          componentes: this.componentes,
+          componentes: this.componente,
           observacoes: this.observacoes,
           empresa: this.empresa,
           notaFiscal: this.notaFiscal,
@@ -336,6 +338,7 @@ export default {
         { url: "marcas", lista: this.marcas, field: "nome" },
         { url: "empresas", lista: this.empresas, field: "nome" },
         { url: "origens", lista: this.origens, field: "nome" },
+        { url: "componentes", lista: this.componentes, field: "nome" },
       ];
 
       lista_campos_formulario.forEach(async (campo) => {
@@ -343,6 +346,7 @@ export default {
           if (response.status == 200) {
             response.data.forEach((dado) => {
               campo.lista.push(dado[campo.field]);
+              console.log(campo.lista)
             });
           }
         });

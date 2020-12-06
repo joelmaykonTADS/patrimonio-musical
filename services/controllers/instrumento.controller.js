@@ -7,6 +7,7 @@ const Ano = models.Ano;
 const Marca = models.Marca;
 const Empresa = models.Empresa;
 const Origem = models.Origem;
+const Componente = models.Componente;
 
 exports.create = async (req, res) => {
   const instrumento = {
@@ -47,6 +48,14 @@ exports.create = async (req, res) => {
         model.create({ ...field })
       }
     });
+    req.body.instrumento.componentes.forEach(async element => {
+      const componente = await Componente.findOne({
+        where: { nome: element },
+      });
+      if (!componente) {
+        Componente.create({ nome: element })
+      }
+    })
   }
 
 
