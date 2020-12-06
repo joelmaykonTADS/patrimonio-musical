@@ -19,7 +19,7 @@ exports.create = async (req, res) => {
     ano: req.body.instrumento.ano,
     descricao: req.body.instrumento.descricao,
     empresa: req.body.instrumento.empresa,
-    origem: req.body.instrumento.origem,
+    origemDoacao: req.body.instrumento.origemDoacao,
     observacoes: req.body.instrumento.observacoes,
     componentes: req.body.instrumento.componentes.join(),
     notaFiscal: req.body.instrumento.notaFiscal,
