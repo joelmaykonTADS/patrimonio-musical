@@ -18,10 +18,11 @@
             ref="pond"
             style="cursor: pointer"
             class-name="my-pond"
-            allow-multiple="true"
+            allow-multiple="false"
             accepted-file-types="application/pdf"
             :label-idle="label"
-            v-bind:files="myFiles"
+            v-model="file"
+            v-bind:files="file"
             labelFileTypeNotAllowed="NÃO ACEITO"
             fileValidateTypeLabelExpectedTypes="É esperado um PDF"
             v-on:init="handleFilePondInit"
@@ -34,7 +35,6 @@
 </template>
 
 <script>
-import firebase from 'firebase'
 // Import FilePond
 import vueFilePond from "vue-filepond";
 // Import plugins
@@ -56,25 +56,21 @@ export default {
   },
   data() {
     return {
-      myFiles: [],
+      file: [],
     };
   },
+  watch: {
+    file: function () {
+      this.file && this.handleFilePondInit();
+    },
+  },
   methods: {
+    // Fazer o upload para o firebase mas se não selecionar salvar deletar do firebase
+    // Caso feche a página deletar do firebase
     handleFilePondInit: function () {
       // example of instance method call on pond reference
       const arquivo = this.$refs.pond.getFiles();
-      console.log(arquivo);
       this.$emit("arquivo", arquivo);
-    },
-    async UploadArquivos(arquivos, url){   
-      // var d = new Date();
-      //"Instrumentos/NotasFiscaisDoacao/"+d.getFullYear()+"/nota_fiscal_doacao_" + this.tombamento + ".pdf"   
-      if (arquivos.length == 1) {        
-        firebase
-          .storage()
-          .ref(url)
-          .put(arquivos[0].file);
-      }    
     },
   },
 };

@@ -150,7 +150,7 @@
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col cols="3">
-        <upload label="Insira aqui o termo" />
+        <upload label="Insira aqui o termo" @arquivo="getFileTermo" />
       </v-col>
       <v-col cols="3">
         <upload label="Insira aqui a nota fiscal" />
@@ -212,7 +212,7 @@
   </v-container>
 </template>
 <script>
-import { get, post } from "@/services/repository";
+import { get, /* post */ } from "@/services/repository";
 
 import upload from "@/components/instrumento/Files";
 
@@ -227,7 +227,7 @@ export default {
       tombamento: "",
       ano: "",
       marca: "",
-      componente:[],
+      componente: [],
       componentes: [],
       observacoes: "",
       origemDoacao: "",
@@ -247,9 +247,10 @@ export default {
       editingIndex: -1,
       arquivoTermo: [],
       arquivoNotaFiscal: [],
+      termo: [],
     };
   },
-  watch: {
+  watch: {   
     arquivoNotaFiscal: function (value) {
       console.log(value);
     },
@@ -296,7 +297,7 @@ export default {
         this.notaFiscal = instrumento.notaFiscal;
         this.observacoesDoacao = instrumento.observacoesDoacao;
         this.valor = instrumento.valor;
-        this.data = instrumento.data.substr(0,10);
+        this.data = instrumento.data.substr(0, 10);
         this.origemDoacao = instrumento.origemDoacao;
       }
     },
@@ -304,7 +305,7 @@ export default {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
     async cadastrarInstrumento() {
-      const dados = {
+      /* const dados = {
         instrumento: {
           nome: this.nome,
           caracteristica: this.caracteristica,
@@ -323,10 +324,11 @@ export default {
           observacoesDoacao: this.observacoesDoacao,
         },
         saveItem: "sim",
-      };
-      await post("instrumentos", dados).then(async (response) => {
+      }; */
+      console.log(this.arquivoTermo)
+     /*  await post("instrumentos", dados).then(async (response) => {
         if (response.status == 200) this.voltar();
-      });
+      }); */
     },
 
     async AtualizarFormulário() {
@@ -346,11 +348,14 @@ export default {
           if (response.status == 200) {
             response.data.forEach((dado) => {
               campo.lista.push(dado[campo.field]);
-              console.log(campo.lista)
+              console.log(campo.lista);
             });
           }
         });
       });
+    },
+    getFileTermo(e){
+      this.arquivoTermo = e;
     },
     voltar() {
       this.$router.push("/instrumentos");
