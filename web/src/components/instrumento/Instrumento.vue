@@ -113,7 +113,9 @@
       <v-col cols="3">
         <v-text-field
           v-model="data"
+          slot="activator"
           color="grey"
+          type="date"
           label="Data da compra ou doação"
           placeholder="Data da compra ou doação"
           outlined
@@ -210,6 +212,7 @@
 </template>
 <script>
 import { get, post } from "@/services/repository";
+
 import upload from "@/components/instrumento/Files";
 
 export default {
@@ -223,7 +226,7 @@ export default {
       tombamento: "",
       ano: "",
       marca: "",
-      componentes: "",
+      componentes: [],
       observacoes: "",
       origemDoacao: "",
       notaFiscal: "",
@@ -285,13 +288,13 @@ export default {
         this.ano = instrumento.ano;
         this.marca = instrumento.marca;
         this.observacoes = instrumento.observacoes;
-        this.componentes = instrumento.componentes;
+        this.componentes = instrumento.componentes.split(",");
         this.empresa = instrumento.empresa;
         this.origemDoacao = instrumento.origemDoacao;
         this.notaFiscal = instrumento.notaFiscal;
         this.observacoesDoacao = instrumento.observacoesDoacao;
         this.valor = instrumento.valor;
-        this.data = instrumento.data;
+        this.data = instrumento.data.substr(0,10);
         this.origemDoacao = instrumento.origemDoacao;
       }
     },
