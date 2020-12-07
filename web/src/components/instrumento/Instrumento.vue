@@ -150,13 +150,22 @@
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col cols="3">
-        <upload label="Insira aqui o termo" @arquivo="getFileTermo" />
+        <upload
+          label="Insira aqui o termo"
+          @arquivo="getFileTermo"
+        />
       </v-col>
       <v-col cols="3">
-        <upload label="Insira aqui a nota fiscal" />
+        <upload
+          label="Insira aqui a nota fiscal"
+          @arquivo="getFileNotaFiscal"
+        />
       </v-col>
       <v-col cols="3">
-        <upload label="insira aqui documento extra" />
+        <upload
+          label="insira aqui documento extra"
+          @arquivo="getFileExtra"
+        />
       </v-col>
     </v-row>
     <v-row class="d-flex justify-end py-auto">
@@ -212,8 +221,8 @@
   </v-container>
 </template>
 <script>
-import { get, /* post */ } from "@/services/repository";
-
+import { get /* post */ } from "@/services/repository";
+import { uploadArquivo } from "@/services/upload";
 import upload from "@/components/instrumento/Files";
 
 export default {
@@ -247,10 +256,10 @@ export default {
       editingIndex: -1,
       arquivoTermo: [],
       arquivoNotaFiscal: [],
-      termo: [],
+      arquivoExtra: [],
     };
   },
-  watch: {   
+  watch: {
     arquivoNotaFiscal: function (value) {
       console.log(value);
     },
@@ -305,6 +314,19 @@ export default {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
     async cadastrarInstrumento() {
+      var d = new Date();
+      const pathNotaFiscal = `Instrumentos/NotasFiscais/${d.getFullYear()}/nota_fiscal_${
+        this.tombamento
+      }.pdf`;
+      await uploadArquivo(pathNotaFiscal, this.arquivoNotaFiscal);
+      const pathTermo = `Instrumentos/Termos/${d.getFullYear()}/termo_${
+        this.tombamento
+      }.pdf`;
+      await uploadArquivo(pathTermo, this.arquivoTermo);
+      const pathExtra = `Instrumentos/Extras/${d.getFullYear()}/extra_${
+        this.tombamento
+      }.pdf`;
+      await uploadArquivo(pathExtra, this.arquivoExtra);
       /* const dados = {
         instrumento: {
           nome: this.nome,
@@ -325,8 +347,7 @@ export default {
         },
         saveItem: "sim",
       }; */
-      console.log(this.arquivoTermo)
-     /*  await post("instrumentos", dados).then(async (response) => {
+      /*  await post("instrumentos", dados).then(async (response) => {
         if (response.status == 200) this.voltar();
       }); */
     },
@@ -354,8 +375,14 @@ export default {
         });
       });
     },
-    getFileTermo(e){
+    getFileTermo(e) {
       this.arquivoTermo = e;
+    },
+    getFileNotaFiscal(e) {
+      this.arquivoNotaFiscal = e;
+    },
+    getFileExtra(e) {
+      this.arquivoExtra = e;
     },
     voltar() {
       this.$router.push("/instrumentos");

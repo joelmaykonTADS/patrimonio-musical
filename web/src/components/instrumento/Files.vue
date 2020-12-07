@@ -18,7 +18,6 @@
             ref="pond"
             style="cursor: pointer"
             class-name="my-pond"
-            allow-multiple="false"
             accepted-file-types="application/pdf"
             :label-idle="label"
             v-model="file"
@@ -68,7 +67,6 @@ export default {
     // Fazer o upload para o firebase mas se não selecionar salvar deletar do firebase
     // Caso feche a página deletar do firebase
     handleFilePondInit: function () {
-      // example of instance method call on pond reference
       const arquivo = this.$refs.pond.getFiles();
       this.$emit("arquivo", arquivo);
     },
