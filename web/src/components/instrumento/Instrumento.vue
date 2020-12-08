@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row class="d-flex justify-center">
       <v-col cols="3">
         <v-combobox
@@ -144,16 +144,15 @@
     </v-row>
     <v-row class="d-flex justify-center form-row-top">
       <v-col cols="9" class="text-center">
-        <span class="body-1 font-weight-bold">Upload de documentos</span>
-        <v-divider class="mt-3" />
+        <span class="body-1 font-weight-bold"
+          >Upload de documentos do instrumento</span
+        >
+        <v-divider />
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col cols="3">
-        <upload
-          label="Insira aqui o termo"
-          @arquivo="getFileTermo"
-        />
+        <upload label="Insira aqui o termo" @arquivo="getFileTermo" />
       </v-col>
       <v-col cols="3">
         <upload
@@ -162,10 +161,7 @@
         />
       </v-col>
       <v-col cols="3">
-        <upload
-          label="insira aqui documento extra"
-          @arquivo="getFileExtra"
-        />
+        <upload label="insira aqui documento extra" @arquivo="getFileExtra" />
       </v-col>
     </v-row>
     <v-row class="d-flex justify-end py-auto">
@@ -173,6 +169,7 @@
         bottom
         absolute
         right
+        class="pb-10"
         direction="top"
         open-on-hover
         transition="slide-y-reverse-transition"
@@ -186,9 +183,8 @@
           fab
           dark
           small
-          color="red  lighten-1"
-          @click="voltar()"
-          v-if="type !== 'edit'"
+          color="purple  lighten-2"
+          @click="voltar()"         
         >
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -203,6 +199,9 @@
         >
           <v-icon>mdi-check</v-icon>
         </v-btn>
+        <v-btn fab dark small color="red lighten-2" v-if="type === 'edit'">
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
         <v-btn
           fab
           dark
@@ -212,9 +211,6 @@
           @click="editStudents()"
         >
           <v-icon>mdi-pencil</v-icon>
-        </v-btn>
-        <v-btn fab dark small color="red lighten-2" v-if="type === 'edit'">
-          <v-icon>mdi-delete</v-icon>
         </v-btn>
       </v-speed-dial>
     </v-row>
@@ -401,6 +397,6 @@ export default {
 }
 
 .form-row-top {
-  margin-top: -46px;
+  margin-top: -48px;
 }
 </style>
