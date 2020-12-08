@@ -10,7 +10,7 @@
         <v-card-text>
           <v-row class="d-flex text-center">
             <v-col cols="12">
-              <v-icon large color="grey darken-2"> mdi-cloud-upload </v-icon>
+              <v-icon large :color="color"> mdi-cloud-upload </v-icon>
             </v-col>
           </v-row>
           <file-pond
@@ -24,7 +24,6 @@
             v-bind:files="file"
             labelFileTypeNotAllowed="NÃO ACEITO"
             fileValidateTypeLabelExpectedTypes="É esperado um PDF"
-            v-on:init="handleFilePondInit"
           >
           </file-pond>
         </v-card-text>
@@ -56,11 +55,13 @@ export default {
   data() {
     return {
       file: [],
+      color: "grey darken-4",
     };
   },
   watch: {
     file: function () {
-      this.file && this.handleFilePondInit();
+      console.log(this.file.length)
+      if (this.file.length > 0) this.handleFilePondInit();
     },
   },
   methods: {
@@ -68,6 +69,7 @@ export default {
     // Caso feche a página deletar do firebase
     handleFilePondInit: function () {
       const arquivo = this.$refs.pond.getFiles();
+      this.color = "blue darken-4";
       this.$emit("arquivo", arquivo);
     },
   },
