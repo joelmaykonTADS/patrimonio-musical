@@ -323,6 +323,8 @@ export default {
         this.tombamento
       }.pdf`;
       await uploadArquivo(pathExtra, this.arquivoExtra);
+      //Salvar os Paths dos arquivos no instrumento
+      // Adicoinar status, localização e encarregado regional e Local responsáveis
       /* const dados = {
         instrumento: {
           nome: this.nome,
