@@ -199,7 +199,7 @@
         >
           <v-icon>mdi-check</v-icon>
         </v-btn>
-        <v-btn fab dark small color="red lighten-2" v-if="type === 'edit'">
+        <v-btn fab dark small color="red lighten-2" v-if="type === 'edit'" @click="deletar(id)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
         <v-btn
@@ -217,7 +217,7 @@
   </v-container>
 </template>
 <script>
-import { get /* post */ } from "@/services/repository";
+import { get, post, remove} from "@/services/repository";
 import { uploadArquivo } from "@/services/upload";
 import upload from "@/components/instrumento/Files";
 
@@ -325,7 +325,7 @@ export default {
       await uploadArquivo(pathExtra, this.arquivoExtra);
       //Salvar os Paths dos arquivos no instrumento
       // Adicoinar status, localização e encarregado regional e Local responsáveis
-      /* const dados = {
+      const dados = {
         instrumento: {
           nome: this.nome,
           caracteristica: this.caracteristica,
@@ -344,10 +344,10 @@ export default {
           observacoesDoacao: this.observacoesDoacao,
         },
         saveItem: "sim",
-      }; */
-      /*  await post("instrumentos", dados).then(async (response) => {
+      }; 
+        await post("instrumentos", dados).then(async (response) => {
         if (response.status == 200) this.voltar();
-      }); */
+      }); 
     },
 
     async AtualizarFormulário() {
@@ -385,6 +385,9 @@ export default {
     voltar() {
       this.$router.push("/instrumentos");
     },
+    deletar(id){
+      remove('/instrumentos',id)
+    }
   },
 };
 </script>
