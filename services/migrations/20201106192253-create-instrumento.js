@@ -47,6 +47,15 @@ module.exports = {
       observacoesDoacao: {
         type: Sequelize.STRING
       },
+      arquivoNotaFiscal:{
+        type: Sequelize.STRING
+      },
+      arquivoTermo:{
+        type: Sequelize.STRING
+      },
+      arquivoExtra:{
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

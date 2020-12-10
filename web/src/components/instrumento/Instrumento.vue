@@ -144,6 +144,30 @@
     </v-row>
     <v-row class="d-flex justify-center form-row-top">
       <v-col cols="9" class="text-center">
+        <span class="body-1 font-weight-bold">documentos do instrumento</span>
+        <v-divider />
+      </v-col>
+    </v-row>
+    <v-row class="d-flex justify-center">
+      <v-col cols="3">
+        <v-card>
+          {{ arquivoTermoAnexo[0].title }}
+        </v-card>
+      </v-col>
+      <v-col cols="3">
+        <v-card>
+          {{ arquivoTermoAnexo[0].title }}
+        </v-card>
+      </v-col>
+      <v-col cols="3">
+        <v-card>
+          {{ arquivoTermoAnexo[0].title }}
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row class="d-flex justify-center">
+      <v-col cols="9" class="text-center">
         <span class="body-1 font-weight-bold"
           >Upload de documentos do instrumento</span
         >
@@ -152,16 +176,19 @@
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col cols="3">
-        <upload label="Insira aqui o termo" @arquivo="getFileTermo" />
+        <upload-file label="Insira aqui o termo" @arquivo="getFileTermo" />
       </v-col>
       <v-col cols="3">
-        <upload
+        <upload-file
           label="Insira aqui a nota fiscal"
           @arquivo="getFileNotaFiscal"
         />
       </v-col>
       <v-col cols="3">
-        <upload label="insira aqui documento extra" @arquivo="getFileExtra" />
+        <upload-file
+          label="insira aqui documento extra"
+          @arquivo="getFileExtra"
+        />
       </v-col>
     </v-row>
     <v-row class="d-flex justify-end py-auto">
@@ -179,13 +206,7 @@
             <v-icon> mdi-alert-circle-outline </v-icon>
           </v-btn>
         </template>
-        <v-btn
-          fab
-          dark
-          small
-          color="purple  lighten-2"
-          @click="voltar()"         
-        >
+        <v-btn fab dark small color="purple  lighten-2" @click="voltar()">
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-btn
@@ -195,11 +216,18 @@
           dark
           small
           color="green lighten-1"
-          @click="cadastrarInstrumento()"
+          @click="salvar()"
         >
           <v-icon>mdi-check</v-icon>
         </v-btn>
-        <v-btn fab dark small color="red lighten-2" v-if="type === 'edit'" @click="deletar(id)">
+        <v-btn
+          fab
+          dark
+          small
+          color="red lighten-2"
+          v-if="type === 'edit'"
+          @click="deletar(id)"
+        >
           <v-icon>mdi-delete</v-icon>
         </v-btn>
         <v-btn
@@ -208,7 +236,7 @@
           small
           color="indigo"
           v-if="type === 'edit'"
-          @click="editStudents()"
+          @click="salvar()"
         >
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
@@ -217,12 +245,12 @@
   </v-container>
 </template>
 <script>
-import { get, post, remove} from "@/services/repository";
-import { uploadArquivo } from "@/services/upload";
-import upload from "@/components/instrumento/Files";
+import { get, post, remove, put } from "@/services/repository";
+import { upload, download } from "@/services/firebase";
+import UploadFile from "@/components/instrumento/Files";
 
 export default {
-  components: { upload },
+  components: { UploadFile },
   props: { instrumento: Object, type: String, readonly: Boolean },
   data() {
     return {
@@ -253,31 +281,29 @@ export default {
       arquivoTermo: [],
       arquivoNotaFiscal: [],
       arquivoExtra: [],
+      arquivoTermoAnexo: "",
     };
   },
   watch: {
-    arquivoNotaFiscal: function (value) {
-      console.log(value);
-    },
-    nome: function (newValue) {
+    nome: function(newValue) {
       this.nome = this.capitalizeFirstLetter(newValue);
     },
-    caracteristica: function (newValue) {
+    caracteristica: function(newValue) {
       this.caracteristica = this.capitalizeFirstLetter(newValue);
     },
-    marca: function (newValue) {
+    marca: function(newValue) {
       this.marca = this.capitalizeFirstLetter(newValue);
     },
-    empresa: function (newValue) {
+    empresa: function(newValue) {
       this.empresa = this.capitalizeFirstLetter(newValue);
     },
-    origemDoacao: function (newValue) {
+    origemDoacao: function(newValue) {
       this.origemDoacao = this.capitalizeFirstLetter(newValue);
     },
-    observacoes: function (newValue) {
+    observacoes: function(newValue) {
       this.observacoes = this.capitalizeFirstLetter(newValue);
     },
-    observacoesDoacao: function (newValue) {
+    observacoesDoacao: function(newValue) {
       this.observacoesDoacao = this.capitalizeFirstLetter(newValue);
     },
   },
@@ -286,7 +312,7 @@ export default {
     this.alterarInstrumento(this.instrumento);
   },
   methods: {
-    alterarInstrumento(instrumento) {
+    async alterarInstrumento(instrumento) {
       if (instrumento) {
         console.log(instrumento);
         this.id = instrumento.id;
@@ -304,50 +330,60 @@ export default {
         this.valor = instrumento.valor;
         this.data = instrumento.data.substr(0, 10);
         this.origemDoacao = instrumento.origemDoacao;
+        const termo = await download(instrumento.arquivoTermo);
+        this.arquivoTermoAnexo = termo;
       }
     },
     capitalizeFirstLetter: (str) => {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
-    async cadastrarInstrumento() {
+    async salvar() {
       var d = new Date();
       const pathNotaFiscal = `Instrumentos/NotasFiscais/${d.getFullYear()}/nota_fiscal_${
         this.tombamento
       }.pdf`;
-      await uploadArquivo(pathNotaFiscal, this.arquivoNotaFiscal);
+      await upload(pathNotaFiscal, this.arquivoNotaFiscal);
       const pathTermo = `Instrumentos/Termos/${d.getFullYear()}/termo_${
         this.tombamento
       }.pdf`;
-      await uploadArquivo(pathTermo, this.arquivoTermo);
+      await upload(pathTermo, this.arquivoTermo);
       const pathExtra = `Instrumentos/Extras/${d.getFullYear()}/extra_${
         this.tombamento
       }.pdf`;
-      await uploadArquivo(pathExtra, this.arquivoExtra);
+      await upload(pathExtra, this.arquivoExtra);
       //Salvar os Paths dos arquivos no instrumento
       // Adicoinar status, localização e encarregado regional e Local responsáveis
-      const dados = {
-        instrumento: {
-          nome: this.nome,
-          caracteristica: this.caracteristica,
-          tombamento: this.tombamento,
-          ano: this.ano,
-          marca: this.marca,
-          aquisicao: "",
-          naipe: "",
-          componentes: this.componente,
-          observacoes: this.observacoes,
-          empresa: this.empresa,
-          notaFiscal: this.notaFiscal,
-          valor: this.valor,
-          data: this.data,
-          origemDoacao: this.origemDoacao,
-          observacoesDoacao: this.observacoesDoacao,
-        },
-        saveItem: "sim",
-      }; 
-        await post("instrumentos", dados).then(async (response) => {
-        if (response.status == 200) this.voltar();
-      }); 
+      const instrumento = {
+        nome: this.nome,
+        caracteristica: this.caracteristica,
+        tombamento: this.tombamento,
+        ano: this.ano,
+        marca: this.marca,
+        aquisicao: "",
+        naipe: "",
+        componentes: this.componente.join(),
+        observacoes: this.observacoes,
+        empresa: this.empresa,
+        notaFiscal: this.notaFiscal,
+        valor: this.valor,
+        data: this.data,
+        origemDoacao: this.origemDoacao,
+        observacoesDoacao: this.observacoesDoacao,
+        arquivoNotaFiscal: pathNotaFiscal,
+        arquivoTermo: pathTermo,
+        arquivoExtra: pathExtra,
+      };
+      if (this.type !== "edit") {
+        await post(`instrumentos`, instrumento).then(async (response) => {
+          if (response.status == 200) this.voltar();
+        });
+      } else {
+        await put(`instrumentos/${this.id}`, instrumento).then(
+          async (response) => {
+            if (response.status == 200) this.voltar();
+          }
+        );
+      }
     },
 
     async AtualizarFormulário() {
@@ -385,9 +421,9 @@ export default {
     voltar() {
       this.$router.push("/instrumentos");
     },
-    deletar(id){
-      remove('/instrumentos',id)
-    }
+    deletar(id) {
+      remove("/instrumentos", id);
+    },
   },
 };
 </script>

@@ -26,7 +26,10 @@ module.exports = (sequelize, DataTypes) => {
     valor: DataTypes.STRING,
     data: DataTypes.DATE,
     origemDoacao: DataTypes.STRING,
-    observacoesDoacao: DataTypes.STRING
+    observacoesDoacao: DataTypes.STRING,
+    arquivoNotaFiscal:DataTypes.STRING,
+    arquivoTermo:DataTypes.STRING,
+    arquivoExtra:DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Instrumento',
