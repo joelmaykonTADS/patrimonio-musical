@@ -142,13 +142,13 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-row class="d-flex justify-center form-row-top">
+    <v-row class="d-flex justify-center form-row-top" v-if="arquivoTermoAnexo">
       <v-col cols="9" class="text-center">
         <span class="body-1 font-weight-bold">documentos do instrumento</span>
         <v-divider />
       </v-col>
     </v-row>
-    <v-row class="d-flex justify-center">
+    <v-row class="d-flex justify-center" v-if="arquivoTermoAnexo">
       <v-col cols="3">
         <v-card>
           {{ arquivoTermoAnexo[0].title }}
@@ -176,7 +176,7 @@
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col cols="3">
-        <upload-file label="Insira aqui o termo" @arquivo="getFileTermo" />
+        <upload-file label="Insira aqui o termo" :myFiles="arquivoTermoAnexo" @arquivo="getFileTermo" />
       </v-col>
       <v-col cols="3">
         <upload-file

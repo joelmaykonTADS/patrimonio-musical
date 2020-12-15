@@ -21,7 +21,7 @@
             accepted-file-types="application/pdf"
             :label-idle="label"
             v-model="file"
-            v-bind:files="file"
+            v-bind:files="myFiles"
             labelFileTypeNotAllowed="NÃO ACEITO"
             fileValidateTypeLabelExpectedTypes="É esperado um PDF"
           >
@@ -48,7 +48,13 @@ const FilePond = vueFilePond(
   FilePondPluginFilePoster
 );
 export default {
-  props: { label: String },
+  props: {
+    label: String,
+    myFiles: {
+      type: Array,
+      default: ()=>{return []},
+    },
+  },
   components: {
     FilePond,
   },
@@ -59,15 +65,18 @@ export default {
     };
   },
   watch: {
-    file: function () {
-      console.log(this.file.length)
+    file: function() {
+      console.log(this.file.length);
       if (this.file.length > 0) this.handleFilePondInit();
     },
+    myFiles:function(){
+      console.log(this.myFiles)
+    }
   },
   methods: {
     // Fazer o upload para o firebase mas se não selecionar salvar deletar do firebase
     // Caso feche a página deletar do firebase
-    handleFilePondInit: function () {
+    handleFilePondInit: function() {
       const arquivo = this.$refs.pond.getFiles();
       this.color = "blue darken-4";
       this.$emit("arquivo", arquivo);

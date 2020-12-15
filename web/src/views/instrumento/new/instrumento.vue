@@ -1,5 +1,5 @@
 <template>
-  <layout-patrimonio modulo="Módulo Patrimônio" title="Cadastro do instrumento">
+  <layout-patrimonio modulo="Módulo Patrimônio" :title="title">
     <form-instrumento
       :instrumento="instrumento"
       :type="type"
@@ -20,6 +20,10 @@ export default {
     instrumento: Object,
     type: String,
     readonly: Boolean,
-  },
+  },data() {
+    return {
+      title:"Cadastrar instrumento"
+    }
+  }
 };
 </script>
