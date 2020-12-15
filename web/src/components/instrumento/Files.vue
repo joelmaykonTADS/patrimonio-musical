@@ -52,7 +52,9 @@ export default {
     label: String,
     myFiles: {
       type: Array,
-      default: ()=>{return []},
+      default: () => {
+        return [];
+      },
     },
   },
   components: {
@@ -69,9 +71,9 @@ export default {
       console.log(this.file.length);
       if (this.file.length > 0) this.handleFilePondInit();
     },
-    myFiles:function(){
-      console.log(this.myFiles)
-    }
+    myFiles: function() {
+      console.log(this.myFiles);
+    },
   },
   methods: {
     // Fazer o upload para o firebase mas se não selecionar salvar deletar do firebase
