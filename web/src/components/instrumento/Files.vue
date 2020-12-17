@@ -15,10 +15,11 @@
           <v-list-item-subtitle></v-list-item-subtitle>
         </v-list-item-content>
 
-        <v-list-item-avatar tile>
+        <v-list-item-avatar tile height="48">
           <img
             alt="user"
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/833px-PDF_file_icon.svg.png"
+            contain
+            src="https://coaph.com.br/novo/wp-content/uploads/2019/03/pdfs-512.png"
           />
         </v-list-item-avatar>
       </v-list-item>

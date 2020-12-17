@@ -9,17 +9,17 @@
     <v-list-item three-line>
       <v-list-item-content>
         <div class="overline mb-4">
-          {{documento}}
+          {{ documento }}
         </div>
         <v-list-item-title class="headline mb-1">
           Termo {{ tombamento }}
         </v-list-item-title>
       </v-list-item-content>
 
-      <v-list-item-avatar tile>
+      <v-list-item-avatar tile height="48">
         <img
           alt="user"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/833px-PDF_file_icon.svg.png"
+          src="https://coaph.com.br/novo/wp-content/uploads/2019/03/pdfs-512.png"
         />
       </v-list-item-avatar>
     </v-list-item>
@@ -45,7 +45,7 @@ export default {
   props: {
     file: Array,
     tombamento: String,
-    documento:String
+    documento: String,
   },
   data() {
     return {
