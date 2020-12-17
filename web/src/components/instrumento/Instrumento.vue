@@ -148,45 +148,24 @@
         <v-divider />
       </v-col>
     </v-row>
-    <v-row class="d-flex justify-center" v-if="arquivoTermoAnexo">
-      <v-col cols="3">
-        <v-card>
-          {{ arquivoTermoAnexo[0].title }}
-        </v-card>
-      </v-col>
-      <v-col cols="3">
-        <v-card>
-          {{ arquivoTermoAnexo[0].title }}
-        </v-card>
-      </v-col>
-      <v-col cols="3">
-        <v-card>
-          {{ arquivoTermoAnexo[0].title }}
-        </v-card>
-      </v-col>
-    </v-row>
-
     <v-row class="d-flex justify-center">
-      <v-col cols="9" class="text-center">
-        <span class="body-1 font-weight-bold"
-          >Upload de documentos do instrumento</span
-        >
-        <v-divider />
+      <v-col cols="3" v-if="arquivoTermoAnexo">
+        <file-download  :file="arquivoTermoAnexo" :tombamento="tombamento" documento="Termo"></file-download>
       </v-col>
-    </v-row>
-    <v-row class="d-flex justify-center">
-      <v-col cols="3">
-        <upload-file label="Insira aqui o termo" :myFiles="arquivoTermoAnexo" @arquivo="getFileTermo" />
+      <v-col cols="3" v-if="!arquivoTermoAnexo">
+        <upload-file label="Insira aqui o termo" documento="Termo" @arquivo="getFileTermo" />
       </v-col>
       <v-col cols="3">
         <upload-file
           label="Insira aqui a nota fiscal"
+          documento="Nota fiscal"
           @arquivo="getFileNotaFiscal"
         />
       </v-col>
       <v-col cols="3">
         <upload-file
           label="insira aqui documento extra"
+          documento="Documento extra"
           @arquivo="getFileExtra"
         />
       </v-col>
@@ -248,9 +227,10 @@
 import { get, post, remove, put } from "@/services/repository";
 import { upload, download } from "@/services/firebase";
 import UploadFile from "@/components/instrumento/Files";
+import FileDownload from "./FileDownload.vue";
 
 export default {
-  components: { UploadFile },
+  components: { UploadFile, FileDownload },
   props: { instrumento: Object, type: String, readonly: Boolean },
   data() {
     return {
@@ -281,7 +261,7 @@ export default {
       arquivoTermo: [],
       arquivoNotaFiscal: [],
       arquivoExtra: [],
-      arquivoTermoAnexo: "",
+      arquivoTermoAnexo: [],
     };
   },
   watch: {

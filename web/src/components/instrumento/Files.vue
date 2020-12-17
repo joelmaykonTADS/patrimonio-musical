@@ -1,18 +1,29 @@
 <template>
-  <v-container>
-    <v-hover>
-      <v-card
-        slot-scope="{ hover }"
-        :class="`elevation-${hover ? 3 : 1}`"
-        class="mx-auto"
-        color="grey lighten-2"
-      >
-        <v-card-text>
-          <v-row class="d-flex text-center">
-            <v-col cols="12">
-              <v-icon large :color="color"> mdi-cloud-upload </v-icon>
-            </v-col>
-          </v-row>
+  <v-hover>
+    <v-card
+      slot-scope="{ hover }"
+      :class="`elevation-${hover ? 3 : 1}`"
+      class="mx-auto"
+      height="200px"
+      outlined
+    >
+      <v-list-item three-line>
+        <v-list-item-content>
+          <div class="overline mb-4">
+            {{ documento }}
+          </div>
+          <v-list-item-subtitle></v-list-item-subtitle>
+        </v-list-item-content>
+
+        <v-list-item-avatar tile>
+          <img
+            alt="user"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/833px-PDF_file_icon.svg.png"
+          />
+        </v-list-item-avatar>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-content>
           <file-pond
             name="test"
             ref="pond"
@@ -21,15 +32,15 @@
             accepted-file-types="application/pdf"
             :label-idle="label"
             v-model="file"
-            v-bind:files="myFiles"
+            v-bind:files="file"
             labelFileTypeNotAllowed="NÃO ACEITO"
             fileValidateTypeLabelExpectedTypes="É esperado um PDF"
           >
           </file-pond>
-        </v-card-text>
-      </v-card>
-    </v-hover>
-  </v-container>
+        </v-list-item-content>
+      </v-list-item>
+    </v-card>
+  </v-hover>
 </template>
 
 <script>
@@ -50,12 +61,7 @@ const FilePond = vueFilePond(
 export default {
   props: {
     label: String,
-    myFiles: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
+    documento: String,
   },
   components: {
     FilePond,
@@ -70,9 +76,6 @@ export default {
     file: function() {
       console.log(this.file.length);
       if (this.file.length > 0) this.handleFilePondInit();
-    },
-    myFiles: function() {
-      console.log(this.myFiles);
     },
   },
   methods: {
