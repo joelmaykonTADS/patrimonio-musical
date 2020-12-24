@@ -1,4 +1,5 @@
-/services/node_modules/*
+/api/node_modules/*
 /web/node_modules/*
-/services/.env
+/api/.env
 /web/.env
+/api/auth/gc.patrimonio.json

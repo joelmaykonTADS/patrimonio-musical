@@ -143,14 +143,14 @@
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
-      <v-col cols="3" v-if="arquivoTermoAnexo">
+      <v-col cols="3" v-if="arquivoTermoAnexo.url">
         <file-download
           :file="arquivoTermoAnexo"
           :tombamento="tombamento"
           documento="Termo"
         ></file-download>
       </v-col>
-      <v-col cols="3" v-if="!arquivoTermoAnexo">
+      <v-col cols="3" v-if="!arquivoTermoAnexo.url">
         <upload-file
           label="Insira aqui o termo"
           documento="Termo"
