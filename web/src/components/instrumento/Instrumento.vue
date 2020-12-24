@@ -173,7 +173,7 @@
       </v-col>
     </v-row>
     <v-row class="d-flex justify-end py-auto">
-      <v-speed-dial
+      <!-- <v-speed-dial
         bottom
         absolute
         right
@@ -221,7 +221,13 @@
         >
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-      </v-speed-dial>
+      </v-speed-dial> -->
+      <v-row class="d-flex justify-center py-auto">
+        <v-btn color="green lighten-1 mr-2" rounded dark>
+          <v-icon>mdi-check</v-icon>
+          Salvar          
+        </v-btn>  
+      </v-row>
     </v-row>
   </v-container>
 </template>
@@ -420,6 +426,6 @@ export default {
 }
 
 .form-row-top {
-  margin-top: -48px;
+  margin-top: -40px;
 }
 </style>

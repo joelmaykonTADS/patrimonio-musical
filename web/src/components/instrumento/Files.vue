@@ -2,16 +2,20 @@
   <v-hover>
     <v-card
       slot-scope="{ hover }"
-      :class="`elevation-${hover ? 3 : 1}`"
-      class="mx-auto"
-      height="200px"
+      :class="`elevation-${hover ? 8 : 2}`"
+      height="100px"
       outlined
     >
       <v-list-item three-line>
         <v-list-item-content>
-          <div class="overline mb-4">
+          <div class="overline">
             {{ documento }}
           </div>
+          <v-row class="pl-3">
+            <v-btn outlined rounded small
+              ><v-icon>mdi-upload-outline</v-icon>upload</v-btn
+            >
+          </v-row>
           <v-list-item-subtitle></v-list-item-subtitle>
         </v-list-item-content>
 
@@ -23,50 +27,17 @@
           />
         </v-list-item-avatar>
       </v-list-item>
-      <v-list-item>
-        <v-list-item-content>
-          <file-pond
-            name="test"
-            ref="pond"
-            style="cursor: pointer"
-            class-name="my-pond"
-            accepted-file-types="application/pdf"
-            :label-idle="label"
-            v-model="file"
-            v-bind:files="file"
-            labelFileTypeNotAllowed="NÃO ACEITO"
-            fileValidateTypeLabelExpectedTypes="É esperado um PDF"
-          >
-          </file-pond>
-        </v-list-item-content>
-      </v-list-item>
     </v-card>
   </v-hover>
 </template>
 
 <script>
-// Import FilePond
-import vueFilePond from "vue-filepond";
-// Import plugins
-import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.esm.js";
-import FilePondPluginFilePoster from "filepond-plugin-file-poster";
-
-// Import styles
-import "filepond/dist/filepond.min.css";
-import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
-// Create FilePond component
-const FilePond = vueFilePond(
-  FilePondPluginFileValidateType,
-  FilePondPluginFilePoster
-);
 export default {
   props: {
     label: String,
     documento: String,
   },
-  components: {
-    FilePond,
-  },
+  components: {},
   data() {
     return {
       file: [],
