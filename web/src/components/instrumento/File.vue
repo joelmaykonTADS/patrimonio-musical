@@ -11,6 +11,7 @@
     outlined
     accept="application/pdf"
     :show-size="1000"
+    :disabled="disabled"
   >
     <template v-slot:selection="{ index, text }">
       <v-chip v-if="index < 2" color="grey darken-3" dark label>
@@ -31,6 +32,7 @@ export default {
   name: "file",
   props: {
     label: String,
+    disabled:Boolean
   },
   data: () => ({
     files: [],

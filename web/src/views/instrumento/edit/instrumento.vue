@@ -1,5 +1,5 @@
 <template>
-  <layout-patrimonio modulo="Módulo Patrimônio" title="Cadastrar instrumento">
+  <layout-patrimonio modulo="Módulo Patrimônio" title="Editar instrumento">
     <form-instrumento
       :instrumento="instrumento"
       :type="type"

@@ -10,6 +10,7 @@
           label="Nome do instrumento"
           placeholder="Informe o nome"
           outlined
+          :readonly="disabled"
         />
       </v-col>
       <v-col cols="3">
@@ -20,6 +21,7 @@
           label="Característica"
           placeholder="Característica ou tonalidade"
           outlined
+          :readonly="disabled"
         />
       </v-col>
       <v-col cols="3">
@@ -31,6 +33,7 @@
           label="Tombamento"
           placeholder="Informe o número"
           outlined
+          :readonly="disabled"
         ></v-combobox>
       </v-col>
     </v-row>
@@ -44,6 +47,7 @@
           label="Ano"
           placeholder="Ano de fabricação"
           outlined
+          :readonly="disabled"
         />
       </v-col>
       <v-col cols="3">
@@ -54,6 +58,7 @@
           label="Marca"
           placeholder="Marca do instrumento"
           outlined
+          :readonly="disabled"
         ></v-combobox>
       </v-col>
       <v-col cols="3">
@@ -65,6 +70,7 @@
           placeholder="Componentes do instrumento"
           outlined
           multiple
+          :readonly="disabled"
         ></v-combobox>
       </v-col>
     </v-row>
@@ -77,6 +83,7 @@
           rows="1"
           placeholder="Descrição da situação do instrumento"
           outlined
+          :readonly="disabled"
         ></v-textarea>
       </v-col>
     </v-row>
@@ -89,6 +96,7 @@
           label="Empresa"
           placeholder="Empresa onde comprou"
           outlined
+          :readonly="disabled"
         ></v-combobox>
       </v-col>
       <v-col cols="3">
@@ -98,6 +106,7 @@
           label="Nota fiscal da compra ou doação"
           placeholder="Número da nota fiscal"
           outlined
+          :readonly="disabled"
         ></v-text-field>
       </v-col>
       <v-col cols="3">
@@ -107,6 +116,7 @@
           label="Valor"
           placeholder="Valor da compra"
           outlined
+          :readonly="disabled"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -120,6 +130,7 @@
           label="Data da compra ou doação"
           placeholder="Data da compra ou doação"
           outlined
+          :readonly="disabled"
         ></v-text-field>
       </v-col>
       <v-col cols="3">
@@ -130,6 +141,7 @@
           label="origem da doação"
           placeholder="origem da doação"
           outlined
+          :readonly="disabled"
         ></v-combobox>
       </v-col>
       <v-col cols="3">
@@ -139,18 +151,31 @@
           label="Observações"
           placeholder="Descrição sobre a doação"
           outlined
+          :readonly="disabled"
         ></v-text-field>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center form-row-top">
       <v-col cols="3">
-        <file label="Termo do instrumento" @file="getFileTermo"></file>
+        <file
+          label="Termo do instrumento"
+          @file="getFileTermo"
+          :disabled="disabled"
+        ></file>
       </v-col>
       <v-col cols="3">
-        <file label="Nota fiscal" @file="getFileNotaFiscal"></file
+        <file
+          label="Nota fiscal"
+          @file="getFileNotaFiscal"
+          :disabled="disabled"
+        ></file
       ></v-col>
       <v-col cols="3">
-        <file label="Documento extra" @file="getFileExtra"></file
+        <file
+          label="Documento extra"
+          @file="getFileExtra"
+          :disabled="disabled"
+        ></file
       ></v-col>
     </v-row>
     <v-row class="d-flex justify-end py-auto">
@@ -204,11 +229,47 @@
         </v-btn>
       </v-speed-dial> -->
       <v-row class="d-flex justify-center py-auto">
-        <v-btn class="mr-2" outlined rounded dark color="purple lighten-2" @click="voltar()">
+        <v-btn
+          class="mr-2"
+          outlined
+          rounded
+          dark
+          color="purple lighten-2"
+          @click="voltar()"
+        >
           <v-icon>mdi-arrow-left</v-icon>
           Voltar
         </v-btn>
-        <v-btn color="green darken-4 mr-2" outlined rounded dark @click="salvar">
+        <v-btn
+          v-if="type === 'edit' && edit === false"
+          color="blue darken-4 mr-2"
+          outlined
+          rounded
+          dark
+          @click="setEdit()"
+        >
+          <v-icon>mdi-pencil</v-icon>
+          Editar
+        </v-btn>
+        <v-btn
+          v-if="type === 'edit' && edit === true"
+          color="green darken-4 mr-2"
+          outlined
+          rounded
+          dark
+          @click="salvar"
+        >
+          <v-icon>mdi-check</v-icon>
+          Salvar
+        </v-btn>
+        <v-btn
+          v-if="type !== 'edit'"
+          color="green darken-4 mr-2"
+          outlined
+          rounded
+          dark
+          @click="salvar"
+        >
           <v-icon>mdi-check</v-icon>
           Salvar
         </v-btn>
@@ -227,6 +288,8 @@ export default {
   props: { instrumento: Object, type: String, readonly: Boolean },
   data() {
     return {
+      disabled: true,
+      edit: false,
       id: "",
       nome: "",
       caracteristica: "",
@@ -283,8 +346,13 @@ export default {
   async created() {
     await this.AtualizarFormulário();
     this.alterarInstrumento(this.instrumento);
+    this.disabled = this.readonly;
   },
   methods: {
+    setEdit() {
+      this.disabled = false;
+      this.edit = true;
+    },
     async alterarInstrumento(instrumento) {
       if (instrumento) {
         console.log(instrumento);
@@ -404,7 +472,10 @@ export default {
       this.arquivoExtra = e;
     },
     voltar() {
-      this.$router.push("/instrumentos");
+      if (this.edit === true) {
+        this.edit = false;
+        this.disabled = true;
+      } else this.$router.push("/instrumentos");
     },
     deletar(id) {
       remove("/instrumentos", id);

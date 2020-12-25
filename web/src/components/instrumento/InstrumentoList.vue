@@ -41,7 +41,7 @@
             <v-spacer></v-spacer>
           </v-toolbar>
         </template>
-        <template v-slot:item.actions="item">
+        <template v-slot:item.actions="item">          
           <btn-edit :instrumento="item.item" />
           <!--btn-delete
           :student="item.item"

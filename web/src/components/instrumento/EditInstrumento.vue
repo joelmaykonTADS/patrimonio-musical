@@ -20,7 +20,7 @@ export default {
     return {
       type: "edit",
       readonly: true,
-      nameComponent: "EditInstrumento",
+      nameComponent: "InstrumentoEdit",
     };
   },
 };
