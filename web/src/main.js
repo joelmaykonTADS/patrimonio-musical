@@ -4,9 +4,7 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import { VueMaskDirective } from "v-mask";
-import { start } from "@/services/firebase.js";
 
-start();
 Vue.directive("mask", VueMaskDirective);
 Vue.config.productionTip = false;
 

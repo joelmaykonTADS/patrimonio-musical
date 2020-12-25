@@ -1,4 +1,4 @@
-require('dotenv/config');
+require("dotenv/config");
 
 module.exports = {
   HOST: process.env.HOST_MYSQL,
@@ -10,6 +10,6 @@ module.exports = {
     max: 5,
     min: 0,
     acquire: process.env.MAX_TIME_CONNECTION_BEFORE_ERRO,
-    idle: process.env.MAX_TIME_CONNECTION_WITHOUT_USE
-  }
+    idle: process.env.MAX_TIME_CONNECTION_WITHOUT_USE,
+  },
 };

@@ -1,16 +1,17 @@
 const { bucket, storage } = require("../../config/googleStorage");
 const { format } = require("util");
+const uuid = require("uuid");
 
 /**
  * Upload the image file to Google Storage
  * @param {File} file object that will be uploaded to Google Storage
  */
-const uploadFileToStorage = (file, localization) => {
+const uploadFileToStorage = (file) => {
   return new Promise((resolve, reject) => {
     if (!file) {
       reject("No image file");
     }
-    let newFileName = `${Date.now()}_${file.originalname}`;
+    const newFileName = `${uuid.v4()}.${file.originalname.split(".").pop()}`;
     let fileUpload = bucket.file(newFileName);
     const blobStream = fileUpload.createWriteStream({
       resumable: false,
@@ -26,7 +27,7 @@ const uploadFileToStorage = (file, localization) => {
     blobStream.on("finish", () => {
       // The public URL can be used to directly access the file via HTTP.
       const url = format(
-        `${process.env.FIREBASE_DATABASE_URL}/${bucket.name}/${localization}/${fileUpload.name}`
+        `${process.env.FIREBASE_DATABASE_URL}/${bucket.name}/${fileUpload.name}`
       );
       resolve(url);
     });
@@ -35,10 +36,11 @@ const uploadFileToStorage = (file, localization) => {
   });
 };
 
-const downloadFileStorage = async (filename) => {
-  const file = await storage.bucket(bucket.name).file(filename).download();
-  const b64 = new Buffer.from(file[0]).toString('base64');   
-  return b64
+const downloadFileStorage = async (url) => {
+  const fileName = url.split("/").pop();
+  const file = await storage.bucket(bucket.name).file(fileName).download();
+  const b64 = new Buffer.from(file[0]).toString("base64");
+  return b64;
 };
 
 module.exports = { uploadFileToStorage, downloadFileStorage };

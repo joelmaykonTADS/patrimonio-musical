@@ -142,35 +142,16 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-row class="d-flex justify-center">
-      <v-col cols="3" v-if="arquivoTermoAnexo.url">
-        <file-download
-          :file="arquivoTermoAnexo"
-          :tombamento="tombamento"
-          documento="Termo"
-        ></file-download>
-      </v-col>
-      <v-col cols="3" v-if="!arquivoTermoAnexo.url">
-        <upload-file
-          label="Insira aqui o termo"
-          documento="Termo"
-          @arquivo="getFileTermo"
-        />
+    <v-row class="d-flex justify-center form-row-top">
+      <v-col cols="3">
+        <file label="Termo do instrumento" @file="getFileTermo"></file>
       </v-col>
       <v-col cols="3">
-        <upload-file
-          label="Insira aqui a nota fiscal"
-          documento="Nota fiscal"
-          @arquivo="getFileNotaFiscal"
-        />
-      </v-col>
+        <file label="Nota fiscal" @file="getFileNotaFiscal"></file
+      ></v-col>
       <v-col cols="3">
-        <upload-file
-          label="insira aqui documento extra"
-          documento="Documento extra"
-          @arquivo="getFileExtra"
-        />
-      </v-col>
+        <file label="Documento extra" @file="getFileExtra"></file
+      ></v-col>
     </v-row>
     <v-row class="d-flex justify-end py-auto">
       <!-- <v-speed-dial
@@ -223,22 +204,26 @@
         </v-btn>
       </v-speed-dial> -->
       <v-row class="d-flex justify-center py-auto">
-        <v-btn color="green lighten-1 mr-2" rounded dark>
+        <v-btn class="mr-2" outlined rounded dark color="purple lighten-2" @click="voltar()">
+          <v-icon>mdi-arrow-left</v-icon>
+          Voltar
+        </v-btn>
+        <v-btn color="green darken-4 mr-2" outlined rounded dark @click="salvar">
           <v-icon>mdi-check</v-icon>
-          Salvar          
-        </v-btn>  
+          Salvar
+        </v-btn>
       </v-row>
     </v-row>
   </v-container>
 </template>
 <script>
 import { get, post, remove, put } from "@/services/repository";
-import { upload, download } from "@/services/firebase";
-import UploadFile from "@/components/instrumento/Files";
-import FileDownload from "./FileDownload.vue";
+import File from "@/components/instrumento/File.vue";
 
 export default {
-  components: { UploadFile, FileDownload },
+  components: {
+    File,
+  },
   props: { instrumento: Object, type: String, readonly: Boolean },
   data() {
     return {
@@ -318,27 +303,39 @@ export default {
         this.valor = instrumento.valor;
         this.data = instrumento.data.substr(0, 10);
         this.origemDoacao = instrumento.origemDoacao;
-        const termo = await download(instrumento.arquivoTermo);
-        this.arquivoTermoAnexo = termo;
+        //const termo = await download(instrumento.arquivoTermo);
+        //this.arquivoTermoAnexo = termo;
       }
     },
     capitalizeFirstLetter: (str) => {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
+    async upload(arquivo) {
+      let file = new FormData();
+      let response;
+      file.append("file", arquivo);
+      await post(`file/upload`, file, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }).then((item) => {
+        if (item.status === 200) {
+          response = item.data.url;
+        }
+      });
+      return response;
+    },
     async salvar() {
-      var d = new Date();
-      const pathNotaFiscal = `Instrumentos/NotasFiscais/${d.getFullYear()}/nota_fiscal_${
-        this.tombamento
-      }.pdf`;
-      await upload(pathNotaFiscal, this.arquivoNotaFiscal);
-      const pathTermo = `Instrumentos/Termos/${d.getFullYear()}/termo_${
-        this.tombamento
-      }.pdf`;
-      await upload(pathTermo, this.arquivoTermo);
-      const pathExtra = `Instrumentos/Extras/${d.getFullYear()}/extra_${
-        this.tombamento
-      }.pdf`;
-      await upload(pathExtra, this.arquivoExtra);
+      let pathTermo, pathNotaFiscal, pathExtra;
+      await this.upload(this.arquivoTermo[0]).then((response) => {
+        pathTermo = response;
+      });
+      await this.upload(this.arquivoNotaFiscal[0]).then((response) => {
+        pathNotaFiscal = response;
+      });
+      await this.upload(this.arquivoExtra[0]).then((response) => {
+        pathExtra = response;
+      });
       //Salvar os Paths dos arquivos no instrumento
       // Adicoinar status, localização e encarregado regional e Local responsáveis
       const instrumento = {
@@ -426,6 +423,6 @@ export default {
 }
 
 .form-row-top {
-  margin-top: -40px;
+  margin-top: -30px;
 }
 </style>

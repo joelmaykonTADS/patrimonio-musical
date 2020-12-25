@@ -5,17 +5,15 @@ const {
 
 exports.upload = async (req, res) => {
   let file = req.file;
-  const localization = req.body.path;
-  console.log(localization);
   if (file) {
-    uploadFileToStorage(file, localization)
+    uploadFileToStorage(file)
       .then((success) => {
         res.status(200).send({
           status: "success",
+          url:success
         });
       })
       .catch((error) => {
-        console.error(error);
         res.status(400).send({
           status: "error",
           error,
@@ -25,17 +23,16 @@ exports.upload = async (req, res) => {
 };
 
 exports.download = async (req, res) => {
-  const { name } = req.body;
-  if (name) {
-    downloadFileStorage(name)
+  const { url } = req.body;
+  if (url) {
+    downloadFileStorage(url)
       .then((success) => {
         res.status(200).send({
           status: "success",
-          data:success
+          data: success,
         });
       })
       .catch((error) => {
-        console.error(error);
         res.status(400).send({
           status: "error",
           error,
