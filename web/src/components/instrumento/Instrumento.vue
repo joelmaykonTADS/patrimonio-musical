@@ -179,55 +179,6 @@
       ></v-col>
     </v-row>
     <v-row class="d-flex justify-end py-auto">
-      <!-- <v-speed-dial
-        bottom
-        absolute
-        right
-        class="pb-10"
-        direction="top"
-        open-on-hover
-        transition="slide-y-reverse-transition"
-      >
-        <template v-slot:activator>
-          <v-btn color="orange" dark fab>
-            <v-icon> mdi-alert-circle-outline </v-icon>
-          </v-btn>
-        </template>
-        <v-btn fab dark small color="purple  lighten-2" @click="voltar()">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-btn
-          id="salvar"
-          v-if="type !== 'edit'"
-          fab
-          dark
-          small
-          color="green lighten-1"
-          @click="salvar()"
-        >
-          <v-icon>mdi-check</v-icon>
-        </v-btn>
-        <v-btn
-          fab
-          dark
-          small
-          color="red lighten-2"
-          v-if="type === 'edit'"
-          @click="deletar(id)"
-        >
-          <v-icon>mdi-delete</v-icon>
-        </v-btn>
-        <v-btn
-          fab
-          dark
-          small
-          color="indigo"
-          v-if="type === 'edit'"
-          @click="salvar()"
-        >
-          <v-icon>mdi-pencil</v-icon>
-        </v-btn>
-      </v-speed-dial> -->
       <v-row class="d-flex justify-center py-auto">
         <v-btn
           class="mr-2"
@@ -285,7 +236,7 @@ export default {
   components: {
     File,
   },
-  props: { instrumento: Object, type: String, readonly: Boolean },
+  props: { type: String, readonly: Boolean },
   data() {
     return {
       disabled: true,
@@ -322,40 +273,46 @@ export default {
   },
   watch: {
     nome: function(newValue) {
-      this.nome = this.capitalizeFirstLetter(newValue);
+      if (newValue) this.nome = this.capitalizeFirstLetter(newValue);
     },
     caracteristica: function(newValue) {
-      this.caracteristica = this.capitalizeFirstLetter(newValue);
+      if (newValue) this.caracteristica = this.capitalizeFirstLetter(newValue);
     },
     marca: function(newValue) {
-      this.marca = this.capitalizeFirstLetter(newValue);
+      if (newValue) this.marca = this.capitalizeFirstLetter(newValue);
     },
     empresa: function(newValue) {
-      this.empresa = this.capitalizeFirstLetter(newValue);
+      if (newValue) this.empresa = this.capitalizeFirstLetter(newValue);
     },
     origemDoacao: function(newValue) {
-      this.origemDoacao = this.capitalizeFirstLetter(newValue);
+      if (newValue) this.origemDoacao = this.capitalizeFirstLetter(newValue);
     },
     observacoes: function(newValue) {
-      this.observacoes = this.capitalizeFirstLetter(newValue);
+      if (newValue) this.observacoes = this.capitalizeFirstLetter(newValue);
     },
     observacoesDoacao: function(newValue) {
-      this.observacoesDoacao = this.capitalizeFirstLetter(newValue);
+      if (newValue)
+        this.observacoesDoacao = this.capitalizeFirstLetter(newValue);
     },
   },
   async created() {
-    await this.AtualizarFormulário();
-    this.alterarInstrumento(this.instrumento);
-    this.disabled = this.readonly;
+    console.log(this.type);
+    if (this.type === undefined) {
+      this.voltar()
+    } else {
+      await this.AtualizarFormulário();
+      this.alterarInstrumento();
+      this.disabled = this.readonly;
+    }
   },
   methods: {
     setEdit() {
       this.disabled = false;
       this.edit = true;
     },
-    async alterarInstrumento(instrumento) {
+    async alterarInstrumento() {
+      const instrumento = this.$store.state.instrumento;
       if (instrumento) {
-        console.log(instrumento);
         this.id = instrumento.id;
         this.nome = instrumento.nome;
         this.tombamento = instrumento.tombamento;
@@ -363,13 +320,13 @@ export default {
         this.ano = instrumento.ano;
         this.marca = instrumento.marca;
         this.observacoes = instrumento.observacoes;
-        this.componente = instrumento.componentes.split(",");
+        this.componente = instrumento.componentes && instrumento.componentes.split(",");
         this.empresa = instrumento.empresa;
         this.origemDoacao = instrumento.origemDoacao;
         this.notaFiscal = instrumento.notaFiscal;
         this.observacoesDoacao = instrumento.observacoesDoacao;
         this.valor = instrumento.valor;
-        this.data = instrumento.data.substr(0, 10);
+        this.data = instrumento.data && instrumento.data.substr(0, 10);
         this.origemDoacao = instrumento.origemDoacao;
         //const termo = await download(instrumento.arquivoTermo);
         //this.arquivoTermoAnexo = termo;
@@ -456,7 +413,6 @@ export default {
           if (response.status == 200) {
             response.data.forEach((dado) => {
               campo.lista.push(dado[campo.field]);
-              console.log(campo.lista);
             });
           }
         });

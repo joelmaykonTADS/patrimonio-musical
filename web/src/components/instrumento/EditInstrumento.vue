@@ -2,10 +2,10 @@
   <router-link
     :to="{
       name: nameComponent,
-      params: { instrumento: instrumento, type: type, readonly: readonly },
+      params: { type: type, readonly: readonly },
     }"
   >
-    <v-btn text>
+    <v-btn text @click="setInstrumento">
       <v-icon small class="mr-2"> mdi-pencil </v-icon>
       Editar</v-btn
     >
@@ -22,6 +22,11 @@ export default {
       readonly: true,
       nameComponent: "InstrumentoEdit",
     };
+  },
+  methods: {
+    setInstrumento() {
+      this.$store.commit("setInstrumento", this.instrumento);
+    },
   },
 };
 </script>
