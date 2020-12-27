@@ -5,10 +5,14 @@
     counter
     :label="label"
     multiple
+    :loading="loading"
     placeholder="Insira o anexo"
     prepend-icon=""
-    truncate-length="15"
+    truncate-length="10"
     outlined
+    @click:append-outer="download(files)"
+    append-outer-icon="mdi-file-download-outline"
+    :messages="messages"
     accept="application/pdf"
     :show-size="1000"
     :disabled="disabled"
@@ -17,7 +21,6 @@
       <v-chip v-if="index < 2" color="grey darken-3" dark label>
         {{ text }}
       </v-chip>
-
       <span
         v-else-if="index === 2"
         class="overline grey--text text--darken-3 mx-2"
@@ -32,24 +35,38 @@ export default {
   name: "file",
   props: {
     label: String,
-    disabled:Boolean,
-    file:Array
+    disabled: Boolean,
+    file: Array,
   },
-  data: () => ({
-    files: [],
-  }),
+  data() {
+    return {
+      files: [],
+      loading: this.disabled,
+      messages: "buscando ...",
+    };
+  },
+  created(){
+    console.log(this.disabled)
+  },
   watch: {
     files: function() {
-      console.log(this.files[0])
-      if (this.files.length > 0) this.fileInit();
+      if (this.files.length > 0) {
+        this.fileInit();
+        this.loading = false;
+        this.messages = "";
+      }
     },
-    file:function(){
-      this.files = this.file
-    }
+    file: function() {
+      this.files = this.file;
+    },
   },
   methods: {
     fileInit() {
       this.$emit("file", this.files);
+    },
+    download(fileData) {
+      var fileURL = URL.createObjectURL(fileData[0]);
+      window.open(fileURL, "_blank");
     },
   },
 };
