@@ -72,6 +72,7 @@ exports.delete = (req, res) => {
   })
     .then((num) => {
       if (num == 1) {
+        res.status(204)
         res.send({
           message: "Instrumento deletado com sucesso!",
         });

@@ -154,7 +154,7 @@
           :readonly="disabled"
         ></v-text-field>
       </v-col>
-    </v-row>
+    </v-row>   
     <v-row class="d-flex justify-center form-row-top">
       <v-col cols="3">
         <file-input
@@ -181,53 +181,52 @@
         ></file-input
       ></v-col>
     </v-row>
-    <v-row class="d-flex justify-end py-auto">
-      <v-row class="d-flex justify-center py-auto">
-        <v-btn
-          class="mr-2"
-          outlined
-          rounded
-          dark
-          color="purple lighten-2"
-          @click="voltar()"
-        >
-          <v-icon>mdi-arrow-left</v-icon>
-          Voltar
-        </v-btn>
-        <v-btn
-          v-if="type === 'edit' && edit === false"
-          color="blue darken-4 mr-2"
-          outlined
-          rounded
-          dark
-          @click="setEdit()"
-        >
-          <v-icon>mdi-pencil</v-icon>
-          Editar
-        </v-btn>
-        <v-btn
-          v-if="type === 'edit' && edit === true"
-          color="green darken-4 mr-2"
-          outlined
-          rounded
-          dark
-          @click="salvar"
-        >
-          <v-icon>mdi-check</v-icon>
-          Salvar
-        </v-btn>
-        <v-btn
-          v-if="type !== 'edit'"
-          color="green darken-4 mr-2"
-          outlined
-          rounded
-          dark
-          @click="salvar"
-        >
-          <v-icon>mdi-check</v-icon>
-          Salvar
-        </v-btn>
-      </v-row>
+    <v-row class="d-flex justify-center py-auto">
+      <v-btn
+        class="mr-2"
+        outlined
+        rounded
+        dark
+        color="purple lighten-2"
+        @click="voltar()"
+      >
+        <v-icon>mdi-arrow-left</v-icon>
+        Voltar
+      </v-btn>
+      <v-btn
+        v-if="type === 'edit' && edit === false"
+        color="blue darken-4 mr-2"
+        outlined
+        rounded
+        dark
+        @click="setEdit()"
+      >
+        <v-icon>mdi-pencil</v-icon>
+        Editar
+      </v-btn>
+      <v-btn
+        v-if="edit === true && type === 'edit'"
+        class="mr-2"
+        color="red darken-4"
+        outlined
+        rounded
+        dark
+        @click="excluir"
+      >
+        <v-icon>mdi-trash-can-outline</v-icon>
+        Excluir
+      </v-btn>
+      <v-btn
+        v-if="edit === true || type !== 'edit'"
+        color="green darken-4 mr-2"
+        outlined
+        rounded
+        dark
+        @click="salvar"
+      >
+        <v-icon>mdi-check</v-icon>
+        Salvar
+      </v-btn>
     </v-row>
   </v-container>
 </template>
@@ -240,9 +239,14 @@ export default {
     FileInput,
   },
   props: { type: String, readonly: Boolean },
+  inject: {
+    theme: {
+      default: { isDark: false },
+    },
+  },
   data() {
     return {
-      disabled: true,
+      disabled: this.readonly,
       edit: false,
       id: "",
       nome: "",
@@ -266,12 +270,9 @@ export default {
       marcas: [],
       origens: [],
       empresas: [],
-      editing: "",
-      editingIndex: -1,
       arquivoTermo: [],
       arquivoNotaFiscal: [],
       arquivoExtra: [],
-      arquivoTermoAnexo: [],
     };
   },
   watch: {
@@ -299,7 +300,6 @@ export default {
     },
   },
   async created() {
-    console.log(this.type);
     if (this.type === undefined) {
       this.voltar();
     } else {
@@ -333,9 +333,7 @@ export default {
         this.data = instrumento.data && instrumento.data.substr(0, 10);
         this.origemDoacao = instrumento.origemDoacao;
         await this.download(instrumento.arquivoTermo).then((response) => {
-          console.log(response.data);
           this.arquivoTermo = [this.convertFile(response.data, "termo.pdf")];
-          console.log(this.arquivoTermo);
         });
         await this.download(instrumento.arquivoNotaFiscal).then((response) => {
           this.arquivoNotaFiscal = [
@@ -349,9 +347,9 @@ export default {
     },
     convertFile(file, fileName) {
       var sampleArr = this.base64ToArrayBuffer(file);
-      const fileData = new File([sampleArr], fileName, { type: "application/pdf" });
-      var fileURL = URL.createObjectURL(fileData);
-      window.open(fileURL, "_blank");
+      const fileData = new File([sampleArr], fileName, {
+        type: "application/pdf",
+      });
       return fileData;
     },
     base64ToArrayBuffer(base64) {
@@ -363,7 +361,7 @@ export default {
         bytes[i] = ascii;
       }
       return bytes;
-    },
+    },    
     capitalizeFirstLetter: (str) => {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
@@ -476,10 +474,15 @@ export default {
       if (this.edit === true) {
         this.edit = false;
         this.disabled = true;
-      } else this.$router.push("/instrumentos");
+      } else {
+        this.$store.commit("setInstrumento", []);
+        this.$router.push("/instrumentos");
+      }
     },
-    deletar(id) {
-      remove("/instrumentos", id);
+    excluir() {
+      remove("instrumentos", this.id).then((response) => {
+        response.status === 204 && this.$router.push("/instrumentos");
+      });
     },
   },
 };
