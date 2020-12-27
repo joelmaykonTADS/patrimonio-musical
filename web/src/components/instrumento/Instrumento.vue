@@ -162,6 +162,7 @@
           :file="arquivoTermo"
           @file="getFileTermo"
           :disabled="disabled"
+           :type="type"
         ></file-input>
       </v-col>
       <v-col cols="3">
@@ -170,6 +171,7 @@
           :file="arquivoNotaFiscal"
           @file="getFileNotaFiscal"
           :disabled="disabled"
+          :type="type"
         ></file-input
       ></v-col>
       <v-col cols="3">
@@ -178,16 +180,16 @@
           :file="arquivoExtra"
           @file="getFileExtra"
           :disabled="disabled"
+           :type="type"
         ></file-input
       ></v-col>
     </v-row>
     <v-row class="d-flex justify-center py-auto">
       <v-btn
         class="mr-2"
-        outlined
-        rounded
+        large        
         dark
-        color="purple lighten-2"
+        color="purple darken-2"
         @click="voltar()"
       >
         <v-icon>mdi-arrow-left</v-icon>
@@ -195,9 +197,8 @@
       </v-btn>
       <v-btn
         v-if="type === 'edit' && edit === false"
-        color="blue darken-4 mr-2"
-        outlined
-        rounded
+        color="blue darken-2 mr-2"
+        large
         dark
         @click="setEdit()"
       >
@@ -207,9 +208,8 @@
       <v-btn
         v-if="edit === true && type === 'edit'"
         class="mr-2"
-        color="red darken-4"
-        outlined
-        rounded
+        color="red lighten-1"
+        large
         dark
         @click="excluir"
       >
@@ -218,9 +218,8 @@
       </v-btn>
       <v-btn
         v-if="edit === true || type !== 'edit'"
-        color="green darken-4 mr-2"
-        outlined
-        rounded
+        color="teal darken-2 mr-2"
+        large
         dark
         @click="salvar"
       >
@@ -499,5 +498,10 @@ export default {
 
 .form-row-top {
   margin-top: -30px;
+}
+
+.v-btn {
+  text-transform: none;
+  font-size: 15px;
 }
 </style>

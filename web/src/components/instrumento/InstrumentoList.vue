@@ -23,7 +23,7 @@
               params: { type: 'register', readonly: false },
             }"
           >
-            <v-btn color="teal" class="white--text"
+            <v-btn color="teal darken-2" large class="white--text"
               ><v-icon>mdi-plus</v-icon>Novo instrumento</v-btn
             >
           </router-link>
@@ -120,7 +120,7 @@ export default {
           sortable: false,
         },
         {
-          text: "localização",
+          text: "Localização",
           align: "center",
           class:
             "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold  pb-5",
@@ -129,7 +129,7 @@ export default {
           sortable: false,
         },
         {
-          text: "Açoes",
+          text: "Ação",
           align: "center",
           class:
             "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold  pb-5",
