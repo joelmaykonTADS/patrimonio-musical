@@ -6,8 +6,8 @@
     }"
   >
     <v-btn text @click="setInstrumento">
-      <v-icon small class="mr-2"> mdi-pencil </v-icon>
-      Editar</v-btn
+      <v-icon small class="mr-2" color="grey darken-2"> mdi-pencil </v-icon>
+      <span class="grey--text text--darken-2 font-weight-bold">Editar</span></v-btn
     >
   </router-link>
 </template>
@@ -33,5 +33,10 @@ export default {
 <style scoped>
 a {
   text-decoration: none;
+}
+
+.v-btn {
+  text-transform: none;
+  font-size: 15px;
 }
 </style>
