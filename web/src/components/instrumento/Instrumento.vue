@@ -348,15 +348,32 @@ export default {
       }
     },
     convertFile(file, fileName) {
-      const fileData = new File([file], fileName);
+      var sampleArr = this.base64ToArrayBuffer(file);
+      const fileData = new File([sampleArr], fileName, { type: "application/pdf" });
+      var fileURL = URL.createObjectURL(fileData);
+      window.open(fileURL, "_blank");
       return fileData;
+    },
+    base64ToArrayBuffer(base64) {
+      var binaryString = window.atob(base64);
+      var binaryLen = binaryString.length;
+      var bytes = new Uint8Array(binaryLen);
+      for (var i = 0; i < binaryLen; i++) {
+        var ascii = binaryString.charCodeAt(i);
+        bytes[i] = ascii;
+      }
+      return bytes;
     },
     capitalizeFirstLetter: (str) => {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
     async download(url) {
       let response;
-      await post(`file/download`, { url }).then((item) => {
+      await post(
+        `file/download`,
+        { url },
+        { responseType: "arraybuffer" }
+      ).then((item) => {
         if (item.status === 200) {
           response = item.data;
         }
