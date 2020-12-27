@@ -32,7 +32,7 @@
         </v-col>
       </v-row>
     </v-app-bar>
-    <v-main>
+    <v-main class="grey lighten-4">
       <slot></slot>
     </v-main>
   </v-app>

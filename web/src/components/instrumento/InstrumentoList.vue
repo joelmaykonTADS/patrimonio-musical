@@ -1,29 +1,30 @@
 <template>
   <v-container>
-    <v-card elevation="0" align="center">
+    <v-card elevation="0" align="center" class="grey lighten-4">
       <v-flex xs12 sm12 md12 lg12 d-flex>
-        <v-flex xs6 sm6 md8 lg8 class="pt-5 pl-2">
+        <v-flex xs6 sm6 md5 lg5 class="pt-5 pl-2 pb-2">
           <v-hover>
             <v-text-field
               v-model="search"
-              append-icon="mdi-table-search"
+              prepend-inner-icon="mdi-table-search"
               label="Pesquisar"
               placeholder="Digite sua busca aqui"
-              outlined
+              solo
+              elevation="2"
               color="grey darken-4"
               hide-details
             ></v-text-field>
           </v-hover>
         </v-flex>
-        <v-flex xs6 sm6 md3 lg3 offset-md1 align-center class="pt-5 pl-4">
+        <v-flex xs6 sm6 md3 lg3 offset-md4 align-center class="pt-7 pl-4">
           <router-link
             :to="{
               name: 'InstrumentoRegister',
               params: { type: 'register', readonly: false },
             }"
           >
-            <v-btn color="grey" class="white--text"
-              >Cadastrar instrumento</v-btn
+            <v-btn color="teal" class="white--text"
+              ><v-icon>mdi-plus</v-icon>Novo instrumento</v-btn
             >
           </router-link>
         </v-flex>
@@ -34,14 +35,16 @@
         :search="search"
         item-key="tombamento"
         :items-per-page="7"
-        class="elevation-0"
+        class="elevation-0 "
+        :loading="loading"
+        loading-text="carregando... aguarde um momento"
       >
         <template v-slot:top>
-          <v-toolbar flat>
+          <v-toolbar flat class="grey lighten-4">
             <v-spacer></v-spacer>
           </v-toolbar>
         </template>
-        <template v-slot:item.actions="item">          
+        <template v-slot:item.actions="item">
           <btn-edit :instrumento="item.item" />
           <!--btn-delete
           :student="item.item"
@@ -49,9 +52,6 @@
         /> -->
         </template>
       </v-data-table>
-      <v-overlay :value="overlay" :absolute="true">
-        <v-progress-circular indeterminate size="64"></v-progress-circular>
-      </v-overlay>
     </v-card>
   </v-container>
 </template>
@@ -67,6 +67,7 @@ export default {
     return {
       overlay: false,
       search: "",
+      loading: true,
       pagination: {
         descending: true,
         page: 1,
@@ -79,20 +80,23 @@ export default {
           text: "Tombamento",
           align: "center",
           value: "tombamento",
-          class: "grey white--text body-2",
+          class:
+            "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold pb-5",
           width: "1%",
         },
         {
           text: "Instrumento",
           align: "center",
           value: "nome",
-          class: "grey white--text",
+          class:
+            "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold pb-5",
           width: "1%",
         },
         {
-          text: "Ton/Característica",
+          text: "Tonalidade/Característica",
           align: "center",
-          class: "grey white--text",
+          class:
+            "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold pb-5",
           width: "1%",
           value: "caracteristica",
           sortable: false,
@@ -100,7 +104,8 @@ export default {
         {
           text: "Status",
           align: "center",
-          class: "grey white--text",
+          class:
+            "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold  pb-5",
           width: "1%",
           value: "",
           sortable: false,
@@ -108,7 +113,8 @@ export default {
         {
           text: "Encarregado Regional/Local",
           align: "center",
-          class: "grey white--text",
+          class:
+            "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold  pb-5",
           width: "1%",
           value: "",
           sortable: false,
@@ -116,7 +122,8 @@ export default {
         {
           text: "localização",
           align: "center",
-          class: "grey white--text",
+          class:
+            "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold  pb-5",
           width: "1%",
           value: "",
           sortable: false,
@@ -124,7 +131,8 @@ export default {
         {
           text: "Açoes",
           align: "center",
-          class: "grey white--text",
+          class:
+            "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold  pb-5",
           width: "1%",
           value: "actions",
           sortable: false,
@@ -142,7 +150,7 @@ export default {
       await get("instrumentos").then((response) => {
         if (response.status == 200) {
           this.instrumentos = response.data;
-          this.overlay = false;
+          this.loading = false;
         }
       });
     },
@@ -152,5 +160,9 @@ export default {
 <style scoped>
 a {
   text-decoration: none;
+}
+.v-btn {
+  text-transform: none;
+  font-size: 15px;
 }
 </style>
