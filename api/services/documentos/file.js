@@ -39,7 +39,7 @@ const uploadFileToStorage = (file) => {
 const downloadFileStorage = async (url) => {
   const fileName = url.split("/").pop();
   const file = await storage.bucket(bucket.name).file(fileName).download();
-  const b64 = new Buffer.from(file[0]).toString("base64");
+   const b64 = new Buffer.from(file[0]).toString("base64");
   return b64;
 };
 

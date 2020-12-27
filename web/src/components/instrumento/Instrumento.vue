@@ -157,25 +157,28 @@
     </v-row>
     <v-row class="d-flex justify-center form-row-top">
       <v-col cols="3">
-        <file
+        <file-input
           label="Termo do instrumento"
+          :file="arquivoTermo"
           @file="getFileTermo"
           :disabled="disabled"
-        ></file>
+        ></file-input>
       </v-col>
       <v-col cols="3">
-        <file
+        <file-input
           label="Nota fiscal"
+          :file="arquivoNotaFiscal"
           @file="getFileNotaFiscal"
           :disabled="disabled"
-        ></file
+        ></file-input
       ></v-col>
       <v-col cols="3">
-        <file
+        <file-input
           label="Documento extra"
+          :file="arquivoExtra"
           @file="getFileExtra"
           :disabled="disabled"
-        ></file
+        ></file-input
       ></v-col>
     </v-row>
     <v-row class="d-flex justify-end py-auto">
@@ -230,11 +233,11 @@
 </template>
 <script>
 import { get, post, remove, put } from "@/services/repository";
-import File from "@/components/instrumento/File.vue";
+import FileInput from "@/components/instrumento/File.vue";
 
 export default {
   components: {
-    File,
+    FileInput,
   },
   props: { type: String, readonly: Boolean },
   data() {
@@ -298,7 +301,7 @@ export default {
   async created() {
     console.log(this.type);
     if (this.type === undefined) {
-      this.voltar()
+      this.voltar();
     } else {
       await this.AtualizarFormulário();
       this.alterarInstrumento();
@@ -320,7 +323,8 @@ export default {
         this.ano = instrumento.ano;
         this.marca = instrumento.marca;
         this.observacoes = instrumento.observacoes;
-        this.componente = instrumento.componentes && instrumento.componentes.split(",");
+        this.componente =
+          instrumento.componentes && instrumento.componentes.split(",");
         this.empresa = instrumento.empresa;
         this.origemDoacao = instrumento.origemDoacao;
         this.notaFiscal = instrumento.notaFiscal;
@@ -328,12 +332,36 @@ export default {
         this.valor = instrumento.valor;
         this.data = instrumento.data && instrumento.data.substr(0, 10);
         this.origemDoacao = instrumento.origemDoacao;
-        //const termo = await download(instrumento.arquivoTermo);
-        //this.arquivoTermoAnexo = termo;
+        await this.download(instrumento.arquivoTermo).then((response) => {
+          console.log(response.data);
+          this.arquivoTermo = [this.convertFile(response.data, "termo.pdf")];
+          console.log(this.arquivoTermo);
+        });
+        await this.download(instrumento.arquivoNotaFiscal).then((response) => {
+          this.arquivoNotaFiscal = [
+            this.convertFile(response.data, "notaFiscal.pdf"),
+          ];
+        });
+        await this.download(instrumento.arquivoExtra).then((response) => {
+          this.arquivoExtra = [this.convertFile(response.data, "extra.pdf")];
+        });
       }
+    },
+    convertFile(file, fileName) {
+      const fileData = new File([file], fileName);
+      return fileData;
     },
     capitalizeFirstLetter: (str) => {
       return str.charAt(0).toUpperCase() + str.slice(1);
+    },
+    async download(url) {
+      let response;
+      await post(`file/download`, { url }).then((item) => {
+        if (item.status === 200) {
+          response = item.data;
+        }
+      });
+      return response;
     },
     async upload(arquivo) {
       let file = new FormData();

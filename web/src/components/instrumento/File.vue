@@ -7,7 +7,7 @@
     multiple
     placeholder="Insira o anexo"
     prepend-icon=""
-    truncate-length="5"
+    truncate-length="15"
     outlined
     accept="application/pdf"
     :show-size="1000"
@@ -32,15 +32,20 @@ export default {
   name: "file",
   props: {
     label: String,
-    disabled:Boolean
+    disabled:Boolean,
+    file:Array
   },
   data: () => ({
     files: [],
   }),
   watch: {
     files: function() {
+      console.log(this.files[0])
       if (this.files.length > 0) this.fileInit();
     },
+    file:function(){
+      this.files = this.file
+    }
   },
   methods: {
     fileInit() {
