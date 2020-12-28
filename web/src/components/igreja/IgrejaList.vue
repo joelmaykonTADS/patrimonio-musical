@@ -45,7 +45,7 @@
           </v-toolbar>
         </template>
         <template v-slot:item.actions="item">
-          <btn-edit :instrumento="item.item" />
+          <btn-edit :igreja="item.item" />
           <!--btn-delete
           :student="item.item"
           @updateListStudents="getAllStudents()"

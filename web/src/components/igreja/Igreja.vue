@@ -26,7 +26,6 @@
         <v-text-field
           v-model="bairro"
           color="grey"
-          maxlength="4"
           label="Bairro"
           placeholder="Informe o nome"
           outlined
@@ -60,7 +59,7 @@
     <v-row class="d-flex justify-center form-row-top">
       <v-col cols="6">
         <v-text-field
-          v-model="nome"
+          v-model="comum"
           color="grey"
           item-color="grey darken-2"
           label="Nome no relatório"
@@ -92,9 +91,9 @@
           outlined
           :readonly="disabled"
         />
-      </v-col>    
+      </v-col>
     </v-row>
-     <v-row class="d-flex justify-center form-row-top">
+    <v-row class="d-flex justify-center form-row-top">
       <v-col cols="9">
         <v-combobox
           v-model="encarregadoLocal"
@@ -106,7 +105,7 @@
           outlined
           :readonly="disabled"
         />
-      </v-col>    
+      </v-col>
     </v-row>
     <v-row class="d-flex justify-center py-auto">
       <v-btn class="mr-2" large dark color="purple darken-2" @click="voltar()">
@@ -162,54 +161,31 @@ export default {
       disabled: this.readonly,
       edit: false,
       id: "",
-      nome: "",
-      caracteristica: "",
-      tombamento: "",
-      ano: "",
-      marca: "",
-      componente: [],
-      componentes: [],
-      observacoes: "",
-      origemDoacao: "",
-      notaFiscal: "",
-      empresa: "",
-      valor: "",
-      data: "",
-      observacoesDoacao: "",
-      nomes: [],
-      caracteristicas: [],
-      tombamentos: [],
-      anos: [],
-      marcas: [],
-      origens: [],
-      empresas: [],
-      arquivoTermo: [],
-      arquivoNotaFiscal: [],
-      arquivoExtra: [],
+      cep: "",
+      cidade: "",
+      bairro: "",
+      rua: "",
+      numero: "",
+      comum: "",
+      codigo: "",
+      encarregadoRegional: "",
+      encarregadoLocal: "",
+      encarregadosRegionais: [],
+      encarregadosLocais: [],
     };
   },
   watch: {
-    nome: function(newValue) {
-      if (newValue) this.nome = this.capitalizeFirstLetter(newValue);
+    cidade: function(newValue) {
+      if (newValue) this.cidade = this.capitalizeFirstLetter(newValue);
     },
-    caracteristica: function(newValue) {
-      if (newValue) this.caracteristica = this.capitalizeFirstLetter(newValue);
+    bairro: function(newValue) {
+      if (newValue) this.bairro = this.capitalizeFirstLetter(newValue);
     },
-    marca: function(newValue) {
-      if (newValue) this.marca = this.capitalizeFirstLetter(newValue);
+    rua: function(newValue) {
+      if (newValue) this.rua = this.capitalizeFirstLetter(newValue);
     },
-    empresa: function(newValue) {
-      if (newValue) this.empresa = this.capitalizeFirstLetter(newValue);
-    },
-    origemDoacao: function(newValue) {
-      if (newValue) this.origemDoacao = this.capitalizeFirstLetter(newValue);
-    },
-    observacoes: function(newValue) {
-      if (newValue) this.observacoes = this.capitalizeFirstLetter(newValue);
-    },
-    observacoesDoacao: function(newValue) {
-      if (newValue)
-        this.observacoesDoacao = this.capitalizeFirstLetter(newValue);
+    comum: function(newValue) {
+      if (newValue) this.comum = this.capitalizeFirstLetter(newValue);
     },
   },
   async created() {
@@ -217,7 +193,7 @@ export default {
       this.voltar();
     } else {
       await this.AtualizarFormulário();
-      this.alterarInstrumento();
+      this.alterarIgreja();
       this.disabled = this.readonly;
     }
   },
@@ -226,129 +202,46 @@ export default {
       this.disabled = false;
       this.edit = true;
     },
-    async alterarInstrumento() {
-      const instrumento = this.$store.state.instrumento;
-      if (instrumento) {
-        this.id = instrumento.id;
-        this.nome = instrumento.nome;
-        this.tombamento = instrumento.tombamento;
-        this.caracteristica = instrumento.caracteristica;
-        this.ano = instrumento.ano;
-        this.marca = instrumento.marca;
-        this.observacoes = instrumento.observacoes;
-        this.componente =
-          instrumento.componentes && instrumento.componentes.split(",");
-        this.empresa = instrumento.empresa;
-        this.origemDoacao = instrumento.origemDoacao;
-        this.notaFiscal = instrumento.notaFiscal;
-        this.observacoesDoacao = instrumento.observacoesDoacao;
-        this.valor = instrumento.valor;
-        this.data = instrumento.data && instrumento.data.substr(0, 10);
-        this.origemDoacao = instrumento.origemDoacao;
-        await this.download(instrumento.arquivoTermo).then((response) => {
-          this.arquivoTermo = [this.convertFile(response.data, "termo.pdf")];
-        });
-        await this.download(instrumento.arquivoNotaFiscal).then((response) => {
-          this.arquivoNotaFiscal = [
-            this.convertFile(response.data, "notaFiscal.pdf"),
-          ];
-        });
-        await this.download(instrumento.arquivoExtra).then((response) => {
-          this.arquivoExtra = [this.convertFile(response.data, "extra.pdf")];
-        });
+    async alterarIgreja() {
+      const igreja = this.$store.state.igreja;
+      console.log(igreja)
+      if (igreja) {
+        this.id = igreja.id;
+        this.cep = igreja.cep;
+        this.cidade = igreja.cidade;
+        this.bairro = igreja.bairro;
+        this.rua = igreja.rua;
+        this.numero = igreja.numero;
+        this.comum = igreja.comum;
+        this.codigo = igreja.codigo;
+        this.encarregadoRegional = igreja.encarregadoRegional;
+        this.encarregadoLocal = igreja.encarregadoLocal;
       }
-    },
-    convertFile(file, fileName) {
-      var sampleArr = this.base64ToArrayBuffer(file);
-      const fileData = new File([sampleArr], fileName, {
-        type: "application/pdf",
-      });
-      return fileData;
-    },
-    base64ToArrayBuffer(base64) {
-      var binaryString = window.atob(base64);
-      var binaryLen = binaryString.length;
-      var bytes = new Uint8Array(binaryLen);
-      for (var i = 0; i < binaryLen; i++) {
-        var ascii = binaryString.charCodeAt(i);
-        bytes[i] = ascii;
-      }
-      return bytes;
     },
     capitalizeFirstLetter: (str) => {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
-    async download(url) {
-      let response;
-      await post(
-        `file/download`,
-        { url },
-        { responseType: "arraybuffer" }
-      ).then((item) => {
-        if (item.status === 200) {
-          response = item.data;
-        }
-      });
-      return response;
-    },
-    async upload(arquivo) {
-      let file = new FormData();
-      let response;
-      file.append("file", arquivo);
-      await post(`file/upload`, file, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }).then((item) => {
-        if (item.status === 200) {
-          response = item.data.url;
-        }
-      });
-      return response;
-    },
     async salvar() {
-      let pathTermo, pathNotaFiscal, pathExtra;
-      await this.upload(this.arquivoTermo[0]).then((response) => {
-        pathTermo = response;
-      });
-      await this.upload(this.arquivoNotaFiscal[0]).then((response) => {
-        pathNotaFiscal = response;
-      });
-      await this.upload(this.arquivoExtra[0]).then((response) => {
-        pathExtra = response;
-      });
-      //Salvar os Paths dos arquivos no instrumento
-      // Adicoinar status, localização e encarregado regional e Local responsáveis
-      const instrumento = {
-        nome: this.nome,
-        caracteristica: this.caracteristica,
-        tombamento: this.tombamento,
-        ano: this.ano,
-        marca: this.marca,
-        aquisicao: "",
-        naipe: "",
-        componentes: this.componente.join(),
-        observacoes: this.observacoes,
-        empresa: this.empresa,
-        notaFiscal: this.notaFiscal,
-        valor: this.valor,
-        data: this.data,
-        origemDoacao: this.origemDoacao,
-        observacoesDoacao: this.observacoesDoacao,
-        arquivoNotaFiscal: pathNotaFiscal,
-        arquivoTermo: pathTermo,
-        arquivoExtra: pathExtra,
+      const igreja = {
+        cep: this.cep,
+        cidade: this.cidade,
+        bairro: this.bairro,
+        rua: this.rua,
+        numero: this.numero,
+        comum: this.comum,
+        codigo: this.codigo,
+        encarregadoRegional: this.encarregadoRegional,
+        encarregadoLocal: this.encarregadoLocal
       };
+      console.log(this.encarregadoLocal)
       if (this.type !== "edit") {
-        await post(`instrumentos`, instrumento).then(async (response) => {
+        await post(`igrejas`, igreja).then(async (response) => {
           if (response.status == 200) this.voltar();
         });
       } else {
-        await put(`instrumentos/${this.id}`, instrumento).then(
-          async (response) => {
-            if (response.status == 200) this.voltar();
-          }
-        );
+        await put(`igrejas/${this.id}`, igreja).then(async (response) => {
+          if (response.status == 200) this.voltar();
+        });
       }
     },
 
@@ -356,12 +249,6 @@ export default {
       const lista_campos_formulario = [
         { url: "nomes", lista: this.nomes, field: "nome" },
         { url: "caracteristicas", lista: this.caracteristicas, field: "nome" },
-        { url: "tombamentos", lista: this.tombamentos, field: "numero" },
-        { url: "anos", lista: this.anos, field: "numero" },
-        { url: "marcas", lista: this.marcas, field: "nome" },
-        { url: "empresas", lista: this.empresas, field: "nome" },
-        { url: "origens", lista: this.origens, field: "nome" },
-        { url: "componentes", lista: this.componentes, field: "nome" },
       ];
 
       lista_campos_formulario.forEach(async (campo) => {
@@ -374,27 +261,18 @@ export default {
         });
       });
     },
-    getFileTermo(e) {
-      this.arquivoTermo = e;
-    },
-    getFileNotaFiscal(e) {
-      this.arquivoNotaFiscal = e;
-    },
-    getFileExtra(e) {
-      this.arquivoExtra = e;
-    },
     voltar() {
       if (this.edit === true) {
         this.edit = false;
         this.disabled = true;
       } else {
-        this.$store.commit("setInstrumento", []);
+        this.$store.commit("setIgreja", []);
         this.$router.push("/igrejas");
       }
     },
     excluir() {
-      remove("instrumentos", this.id).then((response) => {
-        response.status === 204 && this.$router.push("/instrumentos");
+      remove("igrejas", this.id).then((response) => {
+        response.status === 204 && this.$router.push("/igrejas");
       });
     },
   },

@@ -14,18 +14,18 @@
 <script>
 export default {
   props: {
-    instrumento: Object,
+    igreja: Object,
   },
   data() {
     return {
       type: "edit",
       readonly: true,
-      nameComponent: "InstrumentoEdit",
+      nameComponent: "IgrejaEdit",
     };
   },
   methods: {
     setInstrumento() {
-      this.$store.commit("setInstrumento", this.instrumento);
+      this.$store.commit("setIgreja", this.igreja);
     },
   },
 };
