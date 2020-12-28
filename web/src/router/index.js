@@ -43,6 +43,39 @@ const routes = [
       ),
     props: true,
   },
+  {
+    path: "/igrejas",
+    name: "Igreja",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/igreja"),
+  },
+  {
+    path: "/cadastrar-igreja",
+    name: "IgrejaRegister",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../views/igreja/new/igreja"
+      ),
+    props: true,
+  },
+  {
+    path: "/editar-igreja",
+    name: "IgrejaEdit",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../views/igreja/edit/igreja"
+      ),
+    props: true,
+  },
 ];
 
 const router = new VueRouter({
