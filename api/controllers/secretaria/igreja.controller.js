@@ -2,7 +2,7 @@ const models = require("../../models/secretaria");
 const Igreja = models.Igreja;
 
 exports.create = async (req, res) => {
-  const igreja = req.body ;
+  const igreja = req.body;
   const igrejaExist = await Igreja.findOne({
     where: { codigo: igreja.codigo },
   });
@@ -69,6 +69,7 @@ exports.delete = (req, res) => {
   })
     .then((num) => {
       if (num == 1) {
+        res.status(204);
         res.send({
           message: "Ano deletado com sucesso!",
         });

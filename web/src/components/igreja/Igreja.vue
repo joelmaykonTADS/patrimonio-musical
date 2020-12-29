@@ -107,6 +107,7 @@
         />
       </v-col>
     </v-row>
+
     <v-row class="d-flex justify-center py-auto">
       <v-btn class="mr-2" large dark color="purple darken-2" @click="voltar()">
         <v-icon>mdi-arrow-left</v-icon>
@@ -204,7 +205,6 @@ export default {
     },
     async alterarIgreja() {
       const igreja = this.$store.state.igreja;
-      console.log(igreja)
       if (igreja) {
         this.id = igreja.id;
         this.cep = igreja.cep;
@@ -231,9 +231,8 @@ export default {
         comum: this.comum,
         codigo: this.codigo,
         encarregadoRegional: this.encarregadoRegional,
-        encarregadoLocal: this.encarregadoLocal
+        encarregadoLocal: this.encarregadoLocal,
       };
-      console.log(this.encarregadoLocal)
       if (this.type !== "edit") {
         await post(`igrejas`, igreja).then(async (response) => {
           if (response.status == 200) this.voltar();
