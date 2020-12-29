@@ -154,7 +154,7 @@
           :readonly="disabled"
         ></v-text-field>
       </v-col>
-    </v-row>   
+    </v-row>
     <v-row class="d-flex justify-center form-row-top">
       <v-col cols="3">
         <file-input
@@ -162,7 +162,7 @@
           :file="arquivoTermo"
           @file="getFileTermo"
           :disabled="disabled"
-           :type="type"
+          :type="type"
         ></file-input>
       </v-col>
       <v-col cols="3">
@@ -180,14 +180,15 @@
           :file="arquivoExtra"
           @file="getFileExtra"
           :disabled="disabled"
-           :type="type"
+          :type="type"
         ></file-input
       ></v-col>
     </v-row>
     <v-row class="d-flex justify-center py-auto">
       <v-btn
+        elevation="0"
         class="mr-2"
-        large        
+        large
         dark
         color="purple darken-2"
         @click="voltar()"
@@ -196,6 +197,7 @@
         Voltar
       </v-btn>
       <v-btn
+        elevation="0"
         v-if="type === 'edit' && edit === false"
         color="blue darken-2 mr-2"
         large
@@ -206,6 +208,7 @@
         Editar
       </v-btn>
       <v-btn
+        elevation="0"
         v-if="edit === true && type === 'edit'"
         class="mr-2"
         color="red lighten-1"
@@ -217,6 +220,7 @@
         Excluir
       </v-btn>
       <v-btn
+        elevation="0"
         v-if="edit === true || type !== 'edit'"
         color="teal darken-2 mr-2"
         large
@@ -360,7 +364,7 @@ export default {
         bytes[i] = ascii;
       }
       return bytes;
-    },    
+    },
     capitalizeFirstLetter: (str) => {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },

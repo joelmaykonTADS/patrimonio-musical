@@ -109,7 +109,7 @@
     </v-row>
 
     <v-row class="d-flex justify-center py-auto">
-      <v-btn class="mr-2" large dark color="purple darken-2" @click="voltar()">
+      <v-btn class="mr-2" large dark color="purple darken-2" elevation="0" @click="voltar()">
         <v-icon>mdi-arrow-left</v-icon>
         Voltar
       </v-btn>
@@ -119,6 +119,7 @@
         large
         dark
         @click="setEdit()"
+        elevation="0"
       >
         <v-icon>mdi-pencil</v-icon>
         Editar
@@ -129,6 +130,7 @@
         color="red lighten-1"
         large
         dark
+        elevation="0"
         @click="excluir"
       >
         <v-icon>mdi-trash-can-outline</v-icon>
@@ -139,6 +141,7 @@
         color="teal darken-2 mr-2"
         large
         dark
+        elevation="0"
         @click="salvar"
       >
         <v-icon>mdi-check</v-icon>

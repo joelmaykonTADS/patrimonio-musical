@@ -23,7 +23,7 @@
               params: { type: 'register', readonly: false },
             }"
           >
-            <v-btn color="teal darken-2" large class="white--text"
+            <v-btn color="teal darken-2" large class="white--text" elevation="0"
               ><v-icon>mdi-plus</v-icon><span class="font-weight-bold">Novo instrumento</span></v-btn
             >
           </router-link>
@@ -35,7 +35,7 @@
         :search="search"
         item-key="tombamento"
         :items-per-page="7"
-        class="elevation-0 grey--text text--darken-2 font-weight-bold"
+        class="elevation-0 ml-1 grey--text text--darken-2 font-weight-bold"
         :loading="loading"
         loading-text="carregando... aguarde um momento"
       >
