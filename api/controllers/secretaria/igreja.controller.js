@@ -1,4 +1,4 @@
-const models = require("../../models/secretaria");
+const models = require("../../models");
 const Igreja = models.Igreja;
 
 exports.create = async (req, res) => {

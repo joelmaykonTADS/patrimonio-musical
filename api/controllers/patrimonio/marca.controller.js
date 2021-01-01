@@ -1,4 +1,4 @@
-const models = require("../../models/patrimonio");
+const models = require("../../models");
 const Marca = models.Marca;
 
 exports.create = async (req, res) => {

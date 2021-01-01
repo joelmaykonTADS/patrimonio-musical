@@ -1,4 +1,4 @@
-const models = require("../../models/patrimonio");
+const models = require("../../models");
 const Origem = models.Origem;
 
 exports.create = async (req, res) => {

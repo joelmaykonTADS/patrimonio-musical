@@ -18,7 +18,7 @@ var corsOptions = {
 // config cors request
 app.use(cors(corsOptions))
 
-const db = require("./models/secretaria");
+const db = require("./models");
 db.sequelize.sync();
 require("./routes/documentos/file.routes")(app);
 

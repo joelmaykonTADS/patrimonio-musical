@@ -1,4 +1,4 @@
-const models = require("../../models/patrimonio");
+const models = require("../../models");
 const { Op } = require("sequelize");
 
 const Tombamento = models.Tombamento;
