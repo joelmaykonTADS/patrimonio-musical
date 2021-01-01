@@ -11,7 +11,7 @@
     truncate-length="10"
     outlined
     @click:append-outer="download(files)"
-    :append-outer-icon="type === 'edit'&&'mdi-file-download-outline'"
+    :append-outer-icon="type === 'edit'?'mdi-file-download-outline':''"
     :messages="messages"
     accept="application/pdf"
     :show-size="1000"
