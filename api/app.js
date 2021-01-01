@@ -18,9 +18,11 @@ var corsOptions = {
 // config cors request
 app.use(cors(corsOptions))
 
-const db = require("./models/patrimonio");
+const db = require("./models");
 db.sequelize.sync();
 require("./routes/documentos/file.routes")(app);
+
+require("./routes/secretaria/igreja.routes")(app);
 
 require("./routes/patrimonio/instrumento.routes")(app);
 require("./routes/patrimonio/nome.routes")(app);

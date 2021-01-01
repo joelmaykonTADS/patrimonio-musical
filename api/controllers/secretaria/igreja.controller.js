@@ -1,33 +1,32 @@
 const models = require("../../models");
-const Origem = models.Origem;
+const Igreja = models.Igreja;
 
 exports.create = async (req, res) => {
-  const origem = { nome: req.body.nome };
-  const origemExist = await Origem.findOne({
-    where: { nome: origem.nome },
+  const igreja = req.body;
+  const igrejaExist = await Igreja.findOne({
+    where: { codigo: igreja.codigo },
   });
-  if (!origemExist) {
-    Origem.create(origem)
+  if (!igrejaExist) {
+    Igreja.create(igreja)
       .then((data) => {
         res.send(data);
       })
       .catch((err) => {
         res.status(500).send({
-          message:
-            err.message || "Um problema ocorreu ao cadastrar.",
+          message: err.message || "Um problema ocorreu ao cadastrar.",
         });
       });
   } else {
     res.status(400).send({
-      message: `Os dados do origem ${
-        origem.nome ? ` ${origem.nome}` : ``
+      message: `Os dados do codigo da igreja ${
+        igreja.codigo ? ` ${igreja.codigo}` : ``
       } já existe.`,
     });
   }
 };
 
 exports.findAll = (_, res) => {
-  Origem.findAll()
+  Igreja.findAll()
     .then((data) => {
       res.status(200).send(data);
     })
@@ -41,7 +40,7 @@ exports.findAll = (_, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Origem.update(req.body, {
+  Igreja.update(req.body, {
     where: { id: id },
   })
     .then((num) => {
@@ -51,13 +50,13 @@ exports.update = (req, res) => {
         });
       } else {
         res.send({
-          message: `Não foi posível atualizar origem de id: ${id}, talvez não foi encontrado!`,
+          message: `Não foi posível atualizar ano de id: ${id}, talvez não foi encontrado!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: `Um problema ocorreu ao atualizar o origem id: ${id}`,
+        message: `Um problema ocorreu ao atualizar o ano id: ${id}`,
       });
     });
 };
@@ -65,23 +64,24 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Origem.destroy({
+  Igreja.destroy({
     where: { id: id },
   })
     .then((num) => {
       if (num == 1) {
+        res.status(204);
         res.send({
-          message: "Origem deletado com sucesso!",
+          message: "Ano deletado com sucesso!",
         });
       } else {
         res.send({
-          message: `Não foi possível deletar o origem de id: ${id},  talvez não foi encontrado!`,
+          message: `Não foi possível deletar o ano de id: ${id},  talvez não foi encontrado!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: `Um problema ocorreu ao deletar o origem de id: ${id}`,
+        message: `Um problema ocorreu ao deletar o ano de id: ${id}`,
       });
     });
 };
@@ -89,13 +89,13 @@ exports.delete = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Origem.findByPk(id)
+  Igreja.findByPk(id)
     .then((data) => {
       res.send(data);
     })
     .catch(() => {
       res.status(500).send({
-        message: `Um problema ocorreu ao buscar origem de id: ${id}`,
+        message: `Um problema ocorreu ao buscar ano de id: ${id}`,
       });
     });
 };

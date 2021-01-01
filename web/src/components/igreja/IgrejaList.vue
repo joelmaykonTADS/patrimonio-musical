@@ -19,21 +19,21 @@
         <v-flex xs6 sm6 md3 lg3 offset-md4 align-center class="pt-7 pl-4">
           <router-link
             :to="{
-              name: 'InstrumentoRegister',
+              name: 'IgrejaRegister',
               params: { type: 'register', readonly: false },
             }"
           >
             <v-btn color="teal darken-2" large class="white--text" elevation="0"
-              ><v-icon>mdi-plus</v-icon><span class="font-weight-bold">Novo instrumento</span></v-btn
+              ><v-icon>mdi-plus</v-icon><span class="font-weight-bold">Nova igreja</span></v-btn
             >
           </router-link>
         </v-flex>
       </v-flex>
       <v-data-table
         :headers="headers"
-        :items="instrumentos"
+        :items="igrejas"
         :search="search"
-        item-key="tombamento"
+        item-key="codigo"
         :items-per-page="7"
         class="elevation-0 ml-1 grey--text text--darken-2 font-weight-bold"
         :loading="loading"
@@ -45,7 +45,7 @@
           </v-toolbar>
         </template>
         <template v-slot:item.actions="item">
-          <btn-edit :instrumento="item.item" />
+          <btn-edit :igreja="item.item" />
           <!--btn-delete
           :student="item.item"
           @updateListStudents="getAllStudents()"
@@ -57,7 +57,7 @@
 </template>
 <script>
 import { get } from "@/services/repository";
-import BtnEdit from "@/components/instrumento/EditInstrumento";
+import BtnEdit from "@/components/igreja/EditIgreja";
 
 export default {
   components: {
@@ -65,7 +65,6 @@ export default {
   },
   data() {
     return {
-      overlay: false,
       search: "",
       loading: true,
       pagination: {
@@ -77,55 +76,46 @@ export default {
       },
       headers: [
         {
-          text: "Tombamento",
+          text: "Código no relatório",
           align: "center",
-          value: "tombamento",
+          value: "codigo",
           class:
             "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold pb-5",
           width: "1%",
         },
         {
-          text: "Instrumento",
+          text: "Cidade",
           align: "center",
-          value: "nome",
+          value: "cidade",
           class:
             "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold pb-5",
           width: "1%",
         },
         {
-          text: "Tonalidade/Característica",
+          text: "Casa de oração",
           align: "center",
           class:
             "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold pb-5",
           width: "1%",
-          value: "caracteristica",
+          value: "comum",
           sortable: false,
         },
         {
-          text: "Status",
+          text: "Encarregado regional",
           align: "center",
           class:
             "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold  pb-5",
           width: "1%",
-          value: "",
+          value: "encarregadoRegional",
           sortable: false,
         },
         {
-          text: "Encarregado Regional/Local",
+          text: "Encarregado local",
           align: "center",
           class:
             "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold  pb-5",
           width: "1%",
-          value: "",
-          sortable: false,
-        },
-        {
-          text: "Localização",
-          align: "center",
-          class:
-            "grey lighten-4 grey--text text--darken-1 body-1 font-weight-bold  pb-5",
-          width: "1%",
-          value: "",
+          value: "encarregadoLocal",
           sortable: false,
         },
         {
@@ -138,18 +128,18 @@ export default {
           sortable: false,
         },
       ],
-      instrumentos: [],
+      igrejas: [],
     };
   },
   async created() {
-    await this.getInstrumentos();
+    await this.getIgrejas();
   },
   methods: {
-    async getInstrumentos() {
+    async getIgrejas() {
       this.overlay = true;
-      await get("instrumentos").then((response) => {
+      await get("igrejas").then((response) => {
         if (response.status == 200) {
-          this.instrumentos = response.data;
+          this.igrejas = response.data;
           this.loading = false;
         }
       });

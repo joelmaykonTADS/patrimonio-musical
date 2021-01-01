@@ -17,7 +17,7 @@
             >
           </v-list-item-content>
         </template>
-        <v-list-item @click="pageStudents()">
+        <v-list-item @click="page('instrumentos')">
           <v-list-item-content>
             <v-list-item-title>
               <v-icon left>mdi-music-clef-treble</v-icon
@@ -37,7 +37,7 @@
             >
           </v-list-item-content>
         </template>
-        <v-list-item @click="pageStudents()">
+        <v-list-item @click="page('igrejas')">
           <v-list-item-content>
             <v-list-item-title>
               <v-icon left>mdi-city</v-icon
@@ -100,11 +100,8 @@ export default {
   props: { title: String, modulo: String },
   data: () => ({ drawer: null }),
   methods: {
-    pageStudents() {
-      this.$router.push("/instrumentos");
-    },
-    pageModule() {
-      this.$router.push("/");
+    page(page) {
+      this.$router.push(`/${page}`);
     },
   },
 };
