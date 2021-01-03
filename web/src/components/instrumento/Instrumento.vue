@@ -335,16 +335,23 @@ export default {
         this.valor = instrumento.valor;
         this.data = instrumento.data && instrumento.data.substr(0, 10);
         this.origemDoacao = instrumento.origemDoacao;
-        await this.download(instrumento.arquivoTermo).then((response) => {
-          this.arquivoTermo = [this.convertFile(response.data, "termo.pdf")];
-        });
-        await this.download(instrumento.arquivoNotaFiscal).then((response) => {
-          this.arquivoNotaFiscal = [
-            this.convertFile(response.data, "notaFiscal.pdf"),
-          ];
-        });
-        await this.download(instrumento.arquivoExtra).then((response) => {
-          this.arquivoExtra = [this.convertFile(response.data, "extra.pdf")];
+        const arquivos = [
+          {
+            path: instrumento.arquivoTermo,
+            data: this.arquivoTermo,
+            nome: `termo_${this.tombamento}.pdf`,
+          },
+          {
+            path: instrumento.arquivoNotaFiscal,
+            data: this.arquivoNotaFiscal,
+            nome: `notaFiscal_${this.tombamento}.pdf`,
+          },
+          { path: instrumento.arquivoExtra, data: this.arquivoExtra },
+        ];
+        arquivos.forEach(async (element) => {
+          await this.download(element.path).then((response) => {
+            element.data = [this.convertFile(response.data, element.nome)];
+          });
         });
       }
     },
