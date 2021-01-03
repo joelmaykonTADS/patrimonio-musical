@@ -47,7 +47,7 @@
             >
           </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="pageStudents()">
+        <v-list-item @click="page('irmaos')">
           <v-list-item-content>
             <v-list-item-title>
               <v-icon left>mdi-account-tie</v-icon

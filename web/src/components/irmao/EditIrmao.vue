@@ -5,29 +5,27 @@
       params: { type: type, readonly: readonly },
     }"
   >
-    <v-btn text @click="setIgreja" elevation="0">
+    <v-btn text @click="setIrmao" elevation="0">
       <v-icon small class="mr-2" color="grey darken-2"> mdi-eye </v-icon>
-      <span class="grey--text text--darken-2 font-weight-bold"
-        >Visualizar</span
-      ></v-btn
+      <span class="grey--text text--darken-2 font-weight-bold">Visualizar</span></v-btn
     >
   </router-link>
 </template>
 <script>
 export default {
   props: {
-    igreja: Object,
+    irmao: Object,
   },
   data() {
     return {
       type: "edit",
       readonly: true,
-      nameComponent: "IgrejaEdit",
+      nameComponent: "IrmaoEdit",
     };
   },
   methods: {
-    setIgreja() {
-      this.$store.commit("setIgreja", this.igreja);
+    setIrmao() {
+      this.$store.commit("setIrmao", this.irmao);
     },
   },
 };

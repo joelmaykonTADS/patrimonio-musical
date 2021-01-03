@@ -23,6 +23,7 @@ db.sequelize.sync();
 require("./routes/documentos/file.routes")(app);
 
 require("./routes/secretaria/igreja.routes")(app);
+require("./routes/secretaria/irmao.routes")(app);
 
 require("./routes/patrimonio/instrumento.routes")(app);
 require("./routes/patrimonio/nome.routes")(app);

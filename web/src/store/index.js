@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     instrumento: [],
     igreja: [],
+    irmaos:[]
   },
   mutations: {
     setInstrumento(state, instrumento) {
@@ -15,10 +16,14 @@ export default new Vuex.Store({
     setIgreja(state, igreja) {
       state.igreja = igreja;
     },
+    setIrmao(state, irmao) {
+      state.irmao = irmao;
+    }
   },
   actions: {
     instrumento: (state) => state.instrumento,
     igreja: (state) => state.igreja,
+    irmao: (state) => state.irmao
   },
   modules: {},
 });

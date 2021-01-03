@@ -1,15 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const ano = require("../../controllers/secretaria/igreja.controller.js");
+const igreja = require("../../controllers/secretaria/igreja.controller.js");
 
-router.post("/", ano.create);
+router.post("/", igreja.create);
 
-router.get("/", ano.findAll);
+router.get("/", igreja.findAll);
 
-router.get("/:id", ano.findOne);
+router.get("/:id", igreja.findOne);
 
-router.put("/:id", ano.update);
+router.put("/:id", igreja.update);
 
-router.delete("/:id", ano.delete);
+router.delete("/:id", igreja.delete);
 
 module.exports = (app) => app.use("/igrejas", router);
