@@ -335,16 +335,23 @@ export default {
         this.valor = instrumento.valor;
         this.data = instrumento.data && instrumento.data.substr(0, 10);
         this.origemDoacao = instrumento.origemDoacao;
-        await this.download(instrumento.arquivoTermo).then((response) => {
-          this.arquivoTermo = [this.convertFile(response.data, "termo.pdf")];
-        });
-        await this.download(instrumento.arquivoNotaFiscal).then((response) => {
-          this.arquivoNotaFiscal = [
-            this.convertFile(response.data, "notaFiscal.pdf"),
-          ];
-        });
-        await this.download(instrumento.arquivoExtra).then((response) => {
-          this.arquivoExtra = [this.convertFile(response.data, "extra.pdf")];
+        const arquivos = [
+          {
+            path: instrumento.arquivoTermo,
+            data: this.arquivoTermo,
+            nome: `termo_${this.tombamento}.pdf`,
+          },
+          {
+            path: instrumento.arquivoNotaFiscal,
+            data: this.arquivoNotaFiscal,
+            nome: `notaFiscal_${this.tombamento}.pdf`,
+          },
+          { path: instrumento.arquivoExtra, data: this.arquivoExtra },
+        ];
+        arquivos.forEach(async (element) => {
+          await this.download(element.path).then((response) => {
+            element.data = [this.convertFile(response.data, element.nome)];
+          });
         });
       }
     },
@@ -398,16 +405,19 @@ export default {
     },
     async salvar() {
       let pathTermo, pathNotaFiscal, pathExtra;
-      await this.upload(this.arquivoTermo[0]).then((response) => {
-        pathTermo = response;
+      const arquivos = [
+        { path: pathTermo, data: this.arquivoTermo },
+        { path: pathNotaFiscal, data: this.arquivoNotaFiscal },
+        { path: pathExtra, data: this.arquivoExtra },
+      ];
+      arquivos.forEach(async (element) => {
+        if (element.data.length > 0) {
+          await this.upload(element.data[0]).then((response) => {
+            element.path = response;
+          });
+        }
       });
-      await this.upload(this.arquivoNotaFiscal[0]).then((response) => {
-        pathNotaFiscal = response;
-      });
-      await this.upload(this.arquivoExtra[0]).then((response) => {
-        pathExtra = response;
-      });
-      //Salvar os Paths dos arquivos no instrumento
+
       // Adicoinar status, localização e encarregado regional e Local responsáveis
       const instrumento = {
         nome: this.nome,
@@ -417,7 +427,7 @@ export default {
         marca: this.marca,
         aquisicao: "",
         naipe: "",
-        componentes: this.componente.join(),
+        componentes: this.components && this.componente.join(),
         observacoes: this.observacoes,
         empresa: this.empresa,
         notaFiscal: this.notaFiscal,

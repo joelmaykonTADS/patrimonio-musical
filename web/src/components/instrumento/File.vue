@@ -11,7 +11,7 @@
     truncate-length="10"
     outlined
     @click:append-outer="download(files)"
-    :append-outer-icon="type === 'edit'&&'mdi-file-download-outline'"
+    :append-outer-icon="type === 'edit' ? 'mdi-file-download-outline' : ''"
     :messages="messages"
     accept="application/pdf"
     :show-size="1000"
@@ -37,7 +37,7 @@ export default {
     label: String,
     disabled: Boolean,
     file: Array,
-    type:String
+    type: String,
   },
   data() {
     return {
@@ -46,8 +46,10 @@ export default {
       messages: "Buscando ...",
     };
   },
-  created(){
-    console.log(this.disabled)
+  created() {
+    if (this.files.length === 0) {
+      this.loading = false;
+    }
   },
   watch: {
     files: function() {
