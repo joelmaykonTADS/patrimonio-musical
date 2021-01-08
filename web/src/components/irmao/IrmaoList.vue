@@ -138,6 +138,7 @@ export default {
     async getIrmaos() {
       this.overlay = true;
       await get("irmaos").then((response) => {
+        console.log("teste")
         if (response.status == 200) {
           this.Irmaos = response.data;
           this.loading = false;

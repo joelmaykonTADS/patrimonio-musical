@@ -63,7 +63,28 @@ const routes = [
         /* webpackChunkName: "about" */ "../views/igreja/new/igreja"
       ),
     props: true,
-  }, 
+  },
+  {
+    path: "/editar-igreja",
+    name: "IgrejaEdit",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../views/igreja/edit/igreja"
+      ),
+    props: true,
+  },
+  {
+    path: "/irmaos",
+    name: "Irmao",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/irmao"),
+  },
   {
     path: "/cadastrar-irmao",
     name: "IrmaoRegister",
